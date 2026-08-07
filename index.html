@@ -338,29 +338,65 @@
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
-            text-align: center;
-            color: var(--cream-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            padding-top: 20px;
         }
 
-        .footer-content h3 {
+        .footer-left {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            height: 45px;
+        }
+
+        .footer-logo-img {
+            height: 45px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .footer-tagline {
+            font-size: 0.95rem;
+            color: rgba(245, 241, 234, 0.8);
+            max-width: 250px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .footer-right {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .footer-right h3 {
             font-size: 1.5rem;
-            margin-bottom: 25px;
+            margin: 0;
             font-weight: 700;
             color: var(--cream-bg);
-        }
-
-        .footer-content p {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: rgba(245, 241, 234, 0.8);
+            white-space: nowrap;
         }
 
         .footer-links {
             display: flex;
-            gap: 30px;
+            flex-direction: row;
+            gap: 40px;
             justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 0;
         }
 
         .footer-links a {
@@ -369,6 +405,7 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            font-size: 1rem;
         }
 
         .footer-links a::after {
@@ -392,6 +429,7 @@
             border-top: 1px solid rgba(245, 241, 234, 0.2);
             font-size: 0.9rem;
             color: rgba(245, 241, 234, 0.7);
+            text-align: center;
         }
 
         /* ===== RESPONSIVE BREAKPOINTS ===== */
@@ -438,12 +476,20 @@
                 padding: 50px 35px;
             }
 
-            .footer-content h3 {
+            .footer-content {
+                gap: 70px;
+            }
+
+            .footer-right {
+                gap: 40px;
+            }
+
+            .footer-right h3 {
                 font-size: 1.4rem;
             }
 
             .footer-links {
-                gap: 25px;
+                gap: 35px;
             }
         }
 
@@ -647,21 +693,36 @@
                 width: 90%;
             }
 
-            .footer-content h3 {
-                font-size: 1.3rem;
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 35px;
             }
 
-            .footer-content p {
-                font-size: 0.95rem;
+            .footer-left {
+                align-items: center;
+            }
+
+            .footer-right {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .footer-right h3 {
+                font-size: 1.3rem;
             }
 
             .footer-links {
                 gap: 20px;
-                flex-direction: column;
             }
 
             .footer-links a {
                 font-size: 0.95rem;
+            }
+
+            .footer-tagline {
+                font-size: 0.9rem;
             }
         }
 
@@ -805,21 +866,38 @@
                 width: 96%;
             }
 
-            .footer-content h3 {
-                font-size: 1.2rem;
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
             }
 
-            .footer-content p {
-                font-size: 0.9rem;
+            .footer-left {
+                align-items: center;
+            }
+
+            .footer-right {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .footer-right h3 {
+                font-size: 1.2rem;
             }
 
             .footer-links {
                 gap: 15px;
-                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .footer-links a {
                 font-size: 0.9rem;
+            }
+
+            .footer-tagline {
+                font-size: 0.85rem;
             }
 
             .footer-bottom {
@@ -946,21 +1024,38 @@
                 width: 100%;
             }
 
-            .footer-content h3 {
-                font-size: 1.1rem;
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
             }
 
-            .footer-content p {
-                font-size: 0.85rem;
+            .footer-left {
+                align-items: center;
+            }
+
+            .footer-right {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .footer-right h3 {
+                font-size: 1.1rem;
             }
 
             .footer-links {
                 gap: 12px;
-                flex-direction: column;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .footer-links a {
                 font-size: 0.85rem;
+            }
+
+            .footer-tagline {
+                font-size: 0.8rem;
             }
 
             .footer-bottom {
@@ -1062,22 +1157,30 @@
     <!-- Footer Section -->
     <footer>
         <div class="footer-content">
-            <h3>Navigation</h3>
-            <div class="footer-links">
-                <a href="#projects">Projects</a>
-                <a href="#rnd">Research & Publications</a>
-                <a href="https://example.com/resume" target="_blank" rel="noopener noreferrer">
-                    Resume
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-left: 4px; vertical-align: -2px;">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                </a>
+            <div class="footer-left">
+                <div class="footer-logo-section">
+                    <img src="logo1.png" alt="Logo" class="footer-logo-img">
+                </div>
+                <p class="footer-tagline">Building digital experiences with artistic precision.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Creative Developer. All rights reserved.</p>
+            <div class="footer-right">
+                <h3>Navigation</h3>
+                <div class="footer-links">
+                    <a href="#rnd">Research & Publications</a>
+                    <a href="#projects">Projects</a>
+                    <a href="https://example.com/resume" target="_blank" rel="noopener noreferrer">
+                        Resume
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; margin-left: 4px; vertical-align: -2px;">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                </div>
             </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Creative Developer. All rights reserved.</p>
         </div>
     </footer>
 
