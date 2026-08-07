@@ -322,9 +322,9 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 10%;
-            right: 10%;
-            width: 80%;
+            left: 20%;
+            right: 20%;
+            width: 60%;
             height: 2px;
             background: linear-gradient(
                 to right,
@@ -341,7 +341,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 80px;
+            gap: 350px;
             padding-top: 20px;
         }
 
@@ -379,9 +379,10 @@
         .footer-right {
             flex: 0 0 auto;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 50px;
+            gap: 20px;
         }
 
         .footer-right h3 {
@@ -426,10 +427,28 @@
         .footer-bottom {
             margin-top: 40px;
             padding-top: 25px;
-            border-top: 1px solid rgba(245, 241, 234, 0.2);
             font-size: 0.9rem;
             color: rgba(245, 241, 234, 0.7);
             text-align: center;
+            position: relative;
+            border-top: none;
+        }
+
+        .footer-bottom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(20% - 100px);
+            right: calc(20% - 100px);
+            width: calc(60% + 200px);
+            height: 1px;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(245, 241, 234, 0.2) 20%,
+                rgba(245, 241, 234, 0.2) 80%,
+                transparent 100%
+            );
         }
 
         /* ===== RESPONSIVE BREAKPOINTS ===== */
@@ -477,11 +496,11 @@
             }
 
             .footer-content {
-                gap: 70px;
+                gap: 320px;
             }
 
             .footer-right {
-                gap: 40px;
+                gap: 25px;
             }
 
             .footer-right h3 {
