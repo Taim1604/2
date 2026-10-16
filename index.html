@@ -65,42 +65,19 @@
             scrollbar-width: thin;
         }
 
-        /* Artistic ink splatter backgrounds */
-        .splatter {
+
+
+
+
+        /* Floating particles background */
+        #particles {
             position: fixed;
-            opacity: 0.15;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 1;
-        }
-
-        .splatter-1 {
-            top: 15%;
-            right: 5%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle at 30% 40%, var(--dark-text) 20%, transparent 60%);
-            border-radius: 45% 55% 52% 48%;
-            transform: rotate(25deg);
-        }
-
-        .splatter-2 {
-            bottom: 10%;
-            left: 3%;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle at 40% 30%, var(--red-accent) 25%, transparent 65%);
-            border-radius: 38% 62% 45% 55%;
-            transform: rotate(-15deg);
-        }
-
-        .splatter-3 {
-            top: 60%;
-            right: 2%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle at 35% 35%, var(--dark-text) 15%, transparent 55%);
-            border-radius: 48% 52% 38% 62%;
-            transform: rotate(45deg);
         }
 
         /* Fixed Navigation Wrapper Bar */
@@ -309,7 +286,7 @@
         /* Footer Styling */
         footer {
             background-color: var(--dark-accent);
-            padding: 60px 40px;
+            padding: 32px 40px;
             position: relative;
             z-index: 2;
             margin-top: 100px;
@@ -341,8 +318,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 350px;
-            padding-top: 20px;
+            gap: 200px;
+            padding-top: 8px;
         }
 
         .footer-left {
@@ -425,8 +402,8 @@
         }
 
         .footer-bottom {
-            margin-top: 40px;
-            padding-top: 25px;
+            margin-top: 22px;
+            padding-top: 16px;
             font-size: 0.9rem;
             color: rgba(245, 241, 234, 0.7);
             text-align: center;
@@ -476,27 +453,15 @@
                 font-size: 3.2rem;
             }
 
-            .splatter-1 {
-                width: 280px;
-                height: 280px;
-            }
 
-            .splatter-2 {
-                width: 230px;
-                height: 230px;
-            }
 
-            .splatter-3 {
-                width: 180px;
-                height: 180px;
-            }
 
             footer {
-                padding: 50px 35px;
+                padding: 30px 35px;
             }
 
             .footer-content {
-                gap: 320px;
+                gap: 180px;
             }
 
             .footer-right {
@@ -544,26 +509,8 @@
                 font-size: 1.1rem;
             }
 
-            .splatter-1 {
-                width: 240px;
-                height: 240px;
-                top: 20%;
-                right: 3%;
-            }
 
-            .splatter-2 {
-                width: 190px;
-                height: 190px;
-                bottom: 15%;
-                left: 2%;
-            }
 
-            .splatter-3 {
-                width: 150px;
-                height: 150px;
-                top: 55%;
-                right: 1%;
-            }
         }
 
         /* Small Tablet - 768px */
@@ -676,29 +623,8 @@
                 margin-bottom: 15px;
             }
 
-            .splatter-1 {
-                width: 180px;
-                height: 180px;
-                top: 15%;
-                right: 2%;
-                opacity: 0.12;
-            }
 
-            .splatter-2 {
-                width: 140px;
-                height: 140px;
-                bottom: 10%;
-                left: 1%;
-                opacity: 0.12;
-            }
 
-            .splatter-3 {
-                width: 120px;
-                height: 120px;
-                top: 50%;
-                right: 1%;
-                opacity: 0.12;
-            }
 
             footer {
                 padding: 45px 18px;
@@ -855,29 +781,8 @@
                 margin-bottom: 12px;
             }
 
-            .splatter-1 {
-                width: 140px;
-                height: 140px;
-                top: 20%;
-                right: 1%;
-                opacity: 0.1;
-            }
 
-            .splatter-2 {
-                width: 110px;
-                height: 110px;
-                bottom: 15%;
-                left: 0;
-                opacity: 0.1;
-            }
 
-            .splatter-3 {
-                width: 100px;
-                height: 100px;
-                top: 50%;
-                right: 0;
-                opacity: 0.1;
-            }
 
             footer {
                 padding: 40px 12px;
@@ -1039,9 +944,6 @@
                 font-size: 0.85rem;
             }
 
-            .splatter {
-                display: none;
-            }
 
             footer {
                 padding: 35px 10px;
@@ -1104,10 +1006,8 @@
     </style>
 </head>
 <body>
-    <!-- Artistic background elements -->
-    <div class="splatter splatter-1"></div>
-    <div class="splatter splatter-2"></div>
-    <div class="splatter splatter-3"></div>
+    <!-- Floating particles background -->
+    <canvas id="particles" aria-hidden="true"></canvas>
 
     <!-- Top Sticky Navigation Bar -->
     <nav id="navbar">
@@ -1128,8 +1028,6 @@
                 <a href="#about">About Me</a>
                 <a href="#rnd">Research & Publications</a>
                 <a href="#projects">Projects</a>
-                <a href="#journey">Journey</a>
-                <a href="#awards">Awards & Media</a>
                 <a href="#co">Co-Activities</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -1164,18 +1062,6 @@
     <section id="projects">
         <div class="section-content">
             <h2>Projects</h2>
-        </div>
-    </section>
-
-    <section id="journey">
-        <div class="section-content">
-            <h2>Timeline</h2>
-        </div>
-    </section>
-
-    <section id="awards">
-        <div class="section-content">
-            <h2>Awards and Media</h2>
         </div>
     </section>
 
@@ -1288,6 +1174,96 @@
         }, observerOptions);
 
         sections.forEach(section => sectionObserver.observe(section));
+
+        // Floating particles background
+        (function () {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+            const colors = ['26, 26, 26', '122, 80, 48', '139, 125, 107', '120, 116, 74'];
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let w, h, particles = [], rafId;
+            const ptr = { x: -9999, y: -9999 };
+            const REPEL_RADIUS = 130, REPEL_STRENGTH = 6;
+
+            function createParticle(randomY) {
+                return {
+                    x: Math.random() * w,
+                    y: randomY ? Math.random() * h : h + 10,
+                    r: Math.random() * 2.2 + 0.8,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: -(Math.random() * 0.35 + 0.1),
+                    phase: Math.random() * Math.PI * 2,
+                    ox: 0,
+                    oy: 0,
+                    alpha: Math.random() * 0.3 + 0.3,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                };
+            }
+
+            function resize() {
+                const dpr = window.devicePixelRatio || 1;
+                w = window.innerWidth;
+                h = window.innerHeight;
+                canvas.width = Math.round(w * dpr);
+                canvas.height = Math.round(h * dpr);
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                const count = Math.min(70, Math.max(18, Math.round((w * h) / 18000)));
+                particles = Array.from({ length: count }, () => createParticle(true));
+                draw();
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x + p.ox, p.y + p.oy, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
+                    ctx.fill();
+                });
+            }
+
+            function update(time) {
+                particles.forEach((p, i) => {
+                    p.x += p.vx + Math.sin(time / 1500 + p.phase) * 0.15;
+                    p.y += p.vy;
+
+                    // Mouse repel: push away from cursor, then ease back
+                    const dx = p.x + p.ox - ptr.x;
+                    const dy = p.y + p.oy - ptr.y;
+                    const dist = Math.hypot(dx, dy);
+                    if (dist < REPEL_RADIUS && dist > 0.001) {
+                        const f = (REPEL_RADIUS - dist) / REPEL_RADIUS;
+                        p.ox += (dx / dist) * f * REPEL_STRENGTH;
+                        p.oy += (dy / dist) * f * REPEL_STRENGTH;
+                    }
+                    p.ox *= 0.94;
+                    p.oy *= 0.94;
+
+                    if (p.y < -10 || p.x < -10 || p.x > w + 10) {
+                        particles[i] = createParticle(false);
+                        particles[i].x = Math.random() * w;
+                    }
+                });
+                draw();
+                rafId = requestAnimationFrame(update);
+            }
+
+            window.addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; });
+            const clearPtr = () => { ptr.x = ptr.y = -9999; };
+            window.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') clearPtr(); });
+            window.addEventListener('pointercancel', clearPtr);
+            document.documentElement.addEventListener('pointerleave', clearPtr);
+            window.addEventListener('resize', resize);
+            document.addEventListener('visibilitychange', () => {
+                cancelAnimationFrame(rafId);
+                if (!document.hidden && !reduceMotion) rafId = requestAnimationFrame(update);
+            });
+
+            resize();
+            if (!reduceMotion) rafId = requestAnimationFrame(update);
+        })();
     </script>
 </body>
 </html>
