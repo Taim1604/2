@@ -283,6 +283,135 @@
             word-wrap: break-word;
         }
 
+        /* Co-Activities */
+        #co .section-content {
+            width: 100%;
+            max-width: 760px;
+        }
+
+        .activities {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            margin: 32px auto 0;
+            text-align: left;
+        }
+
+        .activity {
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            background: var(--cream-bg);
+            border: 2px solid var(--dark-text);
+            border-radius: 12px;
+            box-shadow: 4px 4px 0 var(--dark-text);
+            overflow: hidden;
+        }
+
+        .activity:nth-child(even) {
+            grid-template-columns: 6fr 4fr;
+        }
+
+        .activity-media {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 190px;
+            margin: 0;
+            background: var(--ash-brown);
+            color: var(--cream-bg);
+            border-right: 2px solid var(--dark-text);
+        }
+
+        .activity:nth-child(even) .activity-media {
+            order: 2;
+            border-right: 0;
+            border-left: 2px solid var(--dark-text);
+        }
+
+        .activity-media svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .activity-media span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .activity-media img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .activity-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 18px 22px;
+        }
+
+        .activity-tag {
+            align-self: flex-start;
+            margin-bottom: 8px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--cream-bg);
+        }
+
+        .activity:nth-child(1) .activity-tag { background: var(--progress-color); }
+        .activity:nth-child(2) .activity-tag { background: #7a5030; }
+
+        .activity-title {
+            margin-bottom: 6px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .activity-text {
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: var(--dark-accent);
+        }
+
+        @media (max-width: 768px) {
+            .activity,
+            .activity:nth-child(even) {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-media,
+            .activity:nth-child(even) .activity-media {
+                order: 0;
+                min-height: 0;
+                aspect-ratio: 16 / 9;
+                border-left: 0;
+                border-right: 0;
+                border-bottom: 2px solid var(--dark-text);
+            }
+
+            .activity-body { padding: 16px 18px; }
+        }
+
+        @media (max-width: 480px) {
+            .activities { gap: 22px; }
+            .activity-title { font-size: 1.15rem; }
+            .activity-text { font-size: 0.9rem; }
+        }
+
         /* Research & Publications */
         #rnd .section-content {
             width: 100%;
@@ -486,7 +615,7 @@
         }
 
         /* Connect Section */
-        #contact h2, #rnd h2 {
+        #contact h2, #rnd h2, #co h2 {
             font-size: 2.8rem;
             font-weight: 900;
             letter-spacing: -1px;
@@ -560,12 +689,12 @@
         }
 
         @media (max-width: 768px) {
-            #contact h2, #rnd h2 { font-size: 2.2rem; }
+            #contact h2, #rnd h2, #co h2 { font-size: 2.2rem; }
             .connect-text { font-size: 1rem; }
         }
 
         @media (max-width: 480px) {
-            #contact h2, #rnd h2 { font-size: 1.8rem; }
+            #contact h2, #rnd h2, #co h2 { font-size: 1.8rem; }
             .connect-buttons { gap: 16px; }
             .connect-btn { padding: 10px 18px; font-size: 0.95rem; }
         }
@@ -1313,8 +1442,8 @@
             <div class="nav-links">
                 <a href="#home">Home</a>
                 <a href="#about">About Me</a>
-                <a href="#rnd">Research & Publications</a>
                 <a href="#projects">Projects</a>
+                <a href="#rnd">Research</a>
                 <a href="#co">Co-Activities</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -1337,6 +1466,12 @@
     <section id="about">
         <div class="section-content">
             <h2>About Me</h2>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="section-content">
+            <h2>Projects</h2>
         </div>
     </section>
 
@@ -1410,15 +1545,36 @@
         </div>
     </section>
 
-    <section id="projects">
-        <div class="section-content">
-            <h2>Projects</h2>
-        </div>
-    </section>
-
     <section id="co">
         <div class="section-content">
             <h2>Co-Activities</h2>
+            <div class="activities">
+                <article class="activity">
+                    <figure class="activity-media">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        <span>Add photo</span>
+                        <img src="teaching.jpg" alt="Teaching photo" loading="lazy" onerror="this.remove()">
+                    </figure>
+                    <div class="activity-body">
+                        <span class="activity-tag">Teaching</span>
+                        <h3 class="activity-title">Teaching &amp; Mentoring</h3>
+                        <p class="activity-text">Placeholder text about your work as a teacher. Describe what you teach, who your students are, how long you have been teaching, and what you enjoy most about it. Two or three sentences work best here.</p>
+                    </div>
+                </article>
+
+                <article class="activity">
+                    <figure class="activity-media">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        <span>Add photo</span>
+                        <img src="chess.jpg" alt="Chess photo" loading="lazy" onerror="this.remove()">
+                    </figure>
+                    <div class="activity-body">
+                        <span class="activity-tag">Chess</span>
+                        <h3 class="activity-title">Chess Career</h3>
+                        <p class="activity-text">Placeholder text about your chess career. Mention the tournaments you have played, your rating or titles, and any highlights or achievements. Two or three sentences work best here.</p>
+                    </div>
+                </article>
+            </div>
         </div>
     </section>
 
