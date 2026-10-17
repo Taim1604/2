@@ -311,7 +311,7 @@
         .activities-track {
             display: flex;
             will-change: transform;
-            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
         .activity-slide {
@@ -1519,6 +1519,46 @@
                 width: auto;
             }
         }
+
+        /* Retro pixel cursors (desktop) */
+        html, body {
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAaCAYAAAC6nQw6AAAAlUlEQVR42sWUQQ6FIAxEn4ZTtPc/WrkGrkiIH7Rg9c+WAPNmoIhIIUA7QdoBRKQ8dZYAzAwAVS0AOeftb2iISDlrBbPryMyYPSy2tStXbme9jFYyex9tGtOD5sH8Fs2DmTybVXUYS/2bYWhp5KBOhKrbidC21rKf27yrPxathrky0H6SH631EN99kI9wGm2z+KOLw9AO78nCrywXG+QAAAAASUVORK5CYII=") 0 0, auto !important;
+            cursor: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAaCAYAAAC6nQw6AAAAlUlEQVR42sWUQQ6FIAxEn4ZTtPc/WrkGrkiIH7Rg9c+WAPNmoIhIIUA7QdoBRKQ8dZYAzAwAVS0AOeftb2iISDlrBbPryMyYPSy2tStXbme9jFYyex9tGtOD5sH8Fs2DmTybVXUYS/2bYWhp5KBOhKrbidC21rKf27yrPxathrky0H6SH631EN99kI9wGm2z+KOLw9AO78nCrywXG+QAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAzCAYAAAD/06q7AAAAtUlEQVR42u3ZQQrFIAwEUP30FOb+R9NrtJvymU2QtNEEOrOqYIv4GhGtrbWz3Blj1BKcX0mWdAOqSIaJ4iPZLAc2eu//ZxEJqT6Smcgy8JHsMVkUH8lcyHbykcydbDUfyZaSreAj2TYyLz6ShZC94SPZNjIRMfXXTl1I5kKGHFg1Wrj9CCFDJiTAxQ35uP0IIdOYPj1DuY+FrUz4rrZgWn8Dkk2rLMOFC8lMVeb1Ia9LHJLNcgHMQGp9FSSfRQAAAABJRU5ErkJggg==") 2x) 0 0, auto !important;
+            cursor: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAaCAYAAAC6nQw6AAAAlUlEQVR42sWUQQ6FIAxEn4ZTtPc/WrkGrkiIH7Rg9c+WAPNmoIhIIUA7QdoBRKQ8dZYAzAwAVS0AOeftb2iISDlrBbPryMyYPSy2tStXbme9jFYyex9tGtOD5sH8Fs2DmTybVXUYS/2bYWhp5KBOhKrbidC21rKf27yrPxathrky0H6SH631EN99kI9wGm2z+KOLw9AO78nCrywXG+QAAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAzCAYAAAD/06q7AAAAtUlEQVR42u3ZQQrFIAwEUP30FOb+R9NrtJvymU2QtNEEOrOqYIv4GhGtrbWz3Blj1BKcX0mWdAOqSIaJ4iPZLAc2eu//ZxEJqT6Smcgy8JHsMVkUH8lcyHbykcydbDUfyZaSreAj2TYyLz6ShZC94SPZNjIRMfXXTl1I5kKGHFg1Wrj9CCFDJiTAxQ35uP0IIdOYPj1DuY+FrUz4rrZgWn8Dkk2rLMOFC8lMVeb1Ia9LHJLNcgHMQGp9FSSfRQAAAABJRU5ErkJggg==") 2x) 0 0, auto !important;
+        }
+
+        html.over-text,
+        html.over-text body {
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAWCAYAAADwza0nAAAATUlEQVR42mOUkpL6z0AGYIExnj59SpQGaWlpBgYGBgYmBjIBIy6nwlwAs4EoICUl9R8GcBlMtlNHNY5qHCoaWYgpAbCpgefHgS8BCAEAwzYbizZ6p30AAAAASUVORK5CYII=") 7 11, auto !important;
+            cursor: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAWCAYAAADwza0nAAAATUlEQVR42mOUkpL6z0AGYIExnj59SpQGaWlpBgYGBgYmBjIBIy6nwlwAs4EoICUl9R8GcBlMtlNHNY5qHCoaWYgpAbCpgefHgS8BCAEAwzYbizZ6p30AAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAtCAYAAABf9xDlAAAAaklEQVR42u2XQQrAMAgEY+kr9P9P02+0Vw+FWgge6uwtEBwYDGRFVa/VlGM1phV25oO7bweY2QCN8nUbs+qsaPg2RoS8Xaqorsz5r0ZgwIABAwYMGDBgwErf712dujJnSBmkU7d1ah71U25lUxfeW1kYsgAAAABJRU5ErkJggg==") 2x) 7 11, auto !important;
+            cursor: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAWCAYAAADwza0nAAAATUlEQVR42mOUkpL6z0AGYIExnj59SpQGaWlpBgYGBgYmBjIBIy6nwlwAs4EoICUl9R8GcBlMtlNHNY5qHCoaWYgpAbCpgefHgS8BCAEAwzYbizZ6p30AAAAASUVORK5CYII=") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAtCAYAAABf9xDlAAAAaklEQVR42u2XQQrAMAgEY+kr9P9P02+0Vw+FWgge6uwtEBwYDGRFVa/VlGM1phV25oO7bweY2QCN8nUbs+qsaPg2RoS8Xaqorsz5r0ZgwIABAwYMGDBgwErf712dujJnSBmkU7d1ah71U25lUxfeW1kYsgAAAABJRU5ErkJggg==") 2x) 7 11, auto !important;
+        }
+
+        a,
+        button,
+        [role="button"],
+        summary,
+        label,
+        .menu-toggle,
+        .paper-head,
+        .act-arrow,
+        .act-dot {
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAaCAYAAACzdqxAAAAAjklEQVR42tVVWw7AIAiTxVO09z+aXMN9uRDnEgl72S++sJRSJV0AQG21qkpyYktvAUAFUC0s+88Zr9c4e7T3uOR7xqWUoyZ5ckk/RY6w6h+zzZ+TInq6owWrqgiA2kYiORzTC5IvHUiEZQ+x2tzV+FEpTluNoEXumuk29YPMyrB20IcdYp0wHZs2O34jxQ7PNNcyq/lqxAAAAABJRU5ErkJggg==") 7 1, auto !important;
+            cursor: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAaCAYAAACzdqxAAAAAjklEQVR42tVVWw7AIAiTxVO09z+aXMN9uRDnEgl72S++sJRSJV0AQG21qkpyYktvAUAFUC0s+88Zr9c4e7T3uOR7xqWUoyZ5ckk/RY6w6h+zzZ+TInq6owWrqgiA2kYiORzTC5IvHUiEZQ+x2tzV+FEpTluNoEXumuk29YPMyrB20IcdYp0wHZs2O34jxQ7PNNcyq/lqxAAAAABJRU5ErkJggg==") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAzCAYAAAADxoFxAAAAvElEQVR42u2ZQQ6AIAwEwfgK+P/T4Bt45QBaEoGWTI9GzQTGhYp3gxVCKK3rOWfvFtXlDJZJaD+qREqpeU+McZkq6AE00EADrbvuGS+dvT9BD9N6vOxPytezEoXQw7QefynUUwU9lumhoVGVLFI1D3osa2x7TWvdqEq++tlV86DH9sVFogojfXx69MJ8V0qQHmr10KZK708segANtOb02JUkkrMb9AAaaCvpMTtJRk970WN7Yzs6rYz0idAPACdIu/EzzsoAAAAASUVORK5CYII=") 2x) 7 1, auto !important;
+            cursor: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAaCAYAAACzdqxAAAAAjklEQVR42tVVWw7AIAiTxVO09z+aXMN9uRDnEgl72S++sJRSJV0AQG21qkpyYktvAUAFUC0s+88Zr9c4e7T3uOR7xqWUoyZ5ckk/RY6w6h+zzZ+TInq6owWrqgiA2kYiORzTC5IvHUiEZQ+x2tzV+FEpTluNoEXumuk29YPMyrB20IcdYp0wHZs2O34jxQ7PNNcyq/lqxAAAAABJRU5ErkJggg==") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAzCAYAAAADxoFxAAAAvElEQVR42u2ZQQ6AIAwEwfgK+P/T4Bt45QBaEoGWTI9GzQTGhYp3gxVCKK3rOWfvFtXlDJZJaD+qREqpeU+McZkq6AE00EADrbvuGS+dvT9BD9N6vOxPytezEoXQw7QefynUUwU9lumhoVGVLFI1D3osa2x7TWvdqEq++tlV86DH9sVFogojfXx69MJ8V0qQHmr10KZK708segANtOb02JUkkrMb9AAaaCvpMTtJRk970WN7Yzs6rYz0idAPACdIu/EzzsoAAAAASUVORK5CYII=") 2x) 7 1, auto !important;
+        }
+
+        .activities-viewport {
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAAh0lEQVR42tVV2w3AIAiEplOc+48ma9gvG4MYSdW23hcxKtzxYnICQMq2iLD3HXs+JCKKMd52CKG633J60GKcreh7ERusksXqGwYj0KzeYaArZiaWMyAAScM6ewIAdg7KRP1eIi6TPCvy3JjV+AAwrL+uyOUS7e/A3Rse7a2JsL9E7pXZQ2tlXktt9Ba0VtGbAAAAAElFTkSuQmCC") 12 8, auto !important;
+            cursor: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAAh0lEQVR42tVV2w3AIAiEplOc+48ma9gvG4MYSdW23hcxKtzxYnICQMq2iLD3HXs+JCKKMd52CKG633J60GKcreh7ERusksXqGwYj0KzeYaArZiaWMyAAScM6ewIAdg7KRP1eIi6TPCvy3JjV+AAwrL+uyOUS7e/A3Rse7a2JsL9E7pXZQ2tlXktt9Ba0VtGbAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAqCAYAAAD1T9h6AAAApklEQVR42u2ZUQqAIBAFNTqF3v9oeg37lVBaSdPNeZ8S2aNhWNGaAXHOpdJ6jNH23uswyqO+gO2FR54QQnHde//4/lbMQGh2zlZs3uAhxCy1YAZCKhCaFQlmIEQBCvzJQpI5hz9Agds43Trn1J75Mvn3gJCKWWgFbLCQikO9xEgrmIcT2bIIrYZTDRssRAEK7GChWUaSmAeEKECB3SxUM9KIcEemLRdp6j6d3VBeugAAAABJRU5ErkJggg==") 2x) 12 8, auto !important;
+            cursor: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAAh0lEQVR42tVV2w3AIAiEplOc+48ma9gvG4MYSdW23hcxKtzxYnICQMq2iLD3HXs+JCKKMd52CKG633J60GKcreh7ERusksXqGwYj0KzeYaArZiaWMyAAScM6ewIAdg7KRP1eIi6TPCvy3JjV+AAwrL+uyOUS7e/A3Rse7a2JsL9E7pXZQ2tlXktt9Ba0VtGbAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAqCAYAAAD1T9h6AAAApklEQVR42u2ZUQqAIBAFNTqF3v9oeg37lVBaSdPNeZ8S2aNhWNGaAXHOpdJ6jNH23uswyqO+gO2FR54QQnHde//4/lbMQGh2zlZs3uAhxCy1YAZCKhCaFQlmIEQBCvzJQpI5hz9Agds43Trn1J75Mvn3gJCKWWgFbLCQikO9xEgrmIcT2bIIrYZTDRssRAEK7GChWUaSmAeEKECB3SxUM9KIcEemLRdp6j6d3VBeugAAAABJRU5ErkJggg==") 2x) 12 8, auto !important;
+        }
+
+        .activities-viewport.dragging {
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAPCAYAAAD+pA/bAAAAY0lEQVR42mNkwAGkpKT+w9jPnj1jROdjU4NLDKvhyAAbn1gxJgYag6FvAVFxQC6QkpL6z4Ic80+fPh2NAwzAiC1zURpU0tLSpGU0UiN24JMpOb6AFRV44wBfgUcI4ApvmgcRAEqtCH/rZgWJAAAAAElFTkSuQmCC") 12 8, auto !important;
+            cursor: -webkit-image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAPCAYAAAD+pA/bAAAAY0lEQVR42mNkwAGkpKT+w9jPnj1jROdjU4NLDKvhyAAbn1gxJgYag6FvAVFxQC6QkpL6z4Ic80+fPh2NAwzAiC1zURpU0tLSpGU0UiN24JMpOb6AFRV44wBfgUcI4ApvmgcRAEqtCH/rZgWJAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAeCAYAAABqpJ3BAAAAc0lEQVR42u2X0QnAMAgFtXQK3X+0uEa7QAoJLYnSu8/gz4PjaVQmMbOr9x4RumPmkOKUD6Cz2rTWujPuLjtmUIgABKCF1kMLZeLMrAotRAAC/HmRZV5e/Mi4hV5qQwuVU2ilTiPaoFBphZ50+ooRbVAoEzcXQT7OHn3ErgAAAABJRU5ErkJggg==") 2x) 12 8, auto !important;
+            cursor: image-set(url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAPCAYAAAD+pA/bAAAAY0lEQVR42mNkwAGkpKT+w9jPnj1jROdjU4NLDKvhyAAbn1gxJgYag6FvAVFxQC6QkpL6z4Ic80+fPh2NAwzAiC1zURpU0tLSpGU0UiN24JMpOb6AFRV44wBfgUcI4ApvmgcRAEqtCH/rZgWJAAAAAElFTkSuQmCC") 1x, url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAeCAYAAABqpJ3BAAAAc0lEQVR42u2X0QnAMAgFtXQK3X+0uEa7QAoJLYnSu8/gz4PjaVQmMbOr9x4RumPmkOKUD6Cz2rTWujPuLjtmUIgABKCF1kMLZeLMrAotRAAC/HmRZV5e/Mi4hV5qQwuVU2ilTiPaoFBphZ50+ooRbVAoEzcXQT7OHn3ErgAAAABJRU5ErkJggg==") 2x) 12 8, auto !important;
+        }
     </style>
 </head>
 <body>
@@ -1842,6 +1882,44 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
+        // Retro I-beam cursor: only while the mouse is over actual text
+        (function () {
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            const root = document.documentElement;
+            const interactive = 'a, button, [role="button"], summary, label, .menu-toggle, .paper-head, .act-arrow, .act-dot, .activities-viewport';
+            let x = 0, y = 0, target = null, frame = 0;
+
+            function overText() {
+                let node = null;
+                if (document.caretPositionFromPoint) {
+                    const pos = document.caretPositionFromPoint(x, y);
+                    node = pos && pos.offsetNode;
+                } else if (document.caretRangeFromPoint) {
+                    const range = document.caretRangeFromPoint(x, y);
+                    node = range && range.startContainer;
+                }
+                if (!node || node.nodeType !== 3 || !node.nodeValue.trim()) return false;
+                const r = document.createRange();
+                r.selectNodeContents(node);
+                for (const rect of r.getClientRects()) {
+                    if (x >= rect.left - 2 && x <= rect.right + 2 && y >= rect.top - 2 && y <= rect.bottom + 2) return true;
+                }
+                return false;
+            }
+
+            function update() {
+                frame = 0;
+                const blocked = target && target.closest && target.closest(interactive);
+                root.classList.toggle('over-text', !blocked && overText());
+            }
+
+            window.addEventListener('pointermove', e => {
+                if (e.pointerType !== 'mouse') return;
+                x = e.clientX; y = e.clientY; target = e.target;
+                if (!frame) frame = requestAnimationFrame(update);
+            }, { passive: true });
+        })();
+
         // Co-Activities carousel
         (function () {
             const root = document.querySelector('.activities');
@@ -1869,7 +1947,7 @@
 
             function go(i) {
                 index = (i + n) % n;
-                track.style.transform = 'translateX(-' + index * 100 + '%)';
+                track.style.transform = 'translate3d(-' + index * 100 + '%, 0, 0)';
                 dots.forEach((d, k) => {
                     d.classList.toggle('active', k === index);
                     d.setAttribute('aria-current', k === index ? 'true' : 'false');
@@ -1886,7 +1964,7 @@
             });
 
             // Swipe / drag: the box follows the finger or mouse, then snaps
-            let startX = 0, startT = 0, dragging = false;
+            let startX = 0, startT = 0, baseX = 0, dragDx = 0, frame = 0, dragging = false;
 
             viewport.addEventListener('dragstart', e => e.preventDefault());
 
@@ -1895,22 +1973,33 @@
                 dragging = true;
                 startX = e.clientX;
                 startT = performance.now();
+                dragDx = 0;
+                // start from where the track really is (even mid-animation)
+                baseX = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
                 track.style.transition = 'none';
+                track.style.transform = 'translate3d(' + baseX + 'px, 0, 0)';
                 viewport.classList.add('dragging');
                 viewport.setPointerCapture(e.pointerId);
             });
+
+            function paintDrag() {
+                frame = 0;
+                track.style.transform = 'translate3d(' + (baseX + dragDx) + 'px, 0, 0)';
+            }
 
             viewport.addEventListener('pointermove', e => {
                 if (!dragging) return;
                 let dx = e.clientX - startX;
                 // rubber-band at the first and last box
                 if ((index === 0 && dx > 0) || (index === n - 1 && dx < 0)) dx *= 0.35;
-                track.style.transform = 'translateX(calc(-' + index * 100 + '% + ' + dx + 'px))';
+                dragDx = dx;
+                if (!frame) frame = requestAnimationFrame(paintDrag);
             });
 
             function endDrag(e, cancelled) {
                 if (!dragging) return;
                 dragging = false;
+                if (frame) { cancelAnimationFrame(frame); frame = 0; }
                 viewport.classList.remove('dragging');
                 track.style.transition = '';
                 if (!cancelled) {
