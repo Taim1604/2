@@ -290,12 +290,101 @@
         }
 
         .activities {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
             width: 100%;
             margin: 32px auto 0;
             text-align: left;
+        }
+
+        .activities-viewport {
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .activities-track {
+            display: flex;
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .activity-slide {
+            display: flex;
+            flex: 0 0 100%;
+            min-width: 0;
+            padding: 2px 8px 8px 2px;
+        }
+
+        .activity-slide .activity {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activities-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 16px;
+        }
+
+        .act-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            background: var(--cream-bg);
+            color: var(--dark-text);
+            border: 2px solid var(--dark-text);
+            border-radius: 50%;
+            box-shadow: 3px 3px 0 var(--dark-text);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .act-arrow svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .act-arrow:hover {
+            background: var(--dark-text);
+            color: var(--cream-bg);
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0 var(--dark-text);
+        }
+
+        .act-arrow:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0 0 0 var(--dark-text);
+        }
+
+        .act-dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .act-dot {
+            width: 12px;
+            height: 12px;
+            padding: 0;
+            background: transparent;
+            border: 2px solid var(--dark-text);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .act-dot:hover { transform: scale(1.2); }
+        .act-dot.active { background: var(--dark-text); }
+
+        .act-arrow:focus-visible,
+        .act-dot:focus-visible {
+            outline: 3px solid var(--progress-color);
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .activities-track { transition: none; }
         }
 
         .activity {
@@ -308,7 +397,7 @@
             overflow: hidden;
         }
 
-        .activity:nth-child(even) {
+        .activity-slide:nth-child(even) .activity {
             grid-template-columns: 6fr 4fr;
         }
 
@@ -326,7 +415,7 @@
             border-right: 2px solid var(--dark-text);
         }
 
-        .activity:nth-child(even) .activity-media {
+        .activity-slide:nth-child(even) .activity-media {
             order: 2;
             border-right: 0;
             border-left: 2px solid var(--dark-text);
@@ -345,6 +434,7 @@
         }
 
         .activity-media img {
+            -webkit-user-drag: none;
             position: absolute;
             inset: 0;
             width: 100%;
@@ -370,8 +460,8 @@
             color: var(--cream-bg);
         }
 
-        .activity:nth-child(1) .activity-tag { background: var(--progress-color); }
-        .activity:nth-child(2) .activity-tag { background: #7a5030; }
+        .activity-slide:nth-child(1) .activity-tag { background: var(--progress-color); }
+        .activity-slide:nth-child(2) .activity-tag { background: #7a5030; }
 
         .activity-title {
             margin-bottom: 6px;
@@ -389,12 +479,12 @@
 
         @media (max-width: 768px) {
             .activity,
-            .activity:nth-child(even) {
+            .activity-slide:nth-child(even) .activity {
                 grid-template-columns: 1fr;
             }
 
             .activity-media,
-            .activity:nth-child(even) .activity-media {
+            .activity-slide:nth-child(even) .activity-media {
                 order: 0;
                 min-height: 0;
                 aspect-ratio: 16 / 9;
@@ -407,7 +497,6 @@
         }
 
         @media (max-width: 480px) {
-            .activities { gap: 22px; }
             .activity-title { font-size: 1.15rem; }
             .activity-text { font-size: 0.9rem; }
         }
@@ -1548,32 +1637,45 @@
     <section id="co">
         <div class="section-content">
             <h2>Co-Activities</h2>
-            <div class="activities">
-                <article class="activity">
-                    <figure class="activity-media">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                        <span>Add photo</span>
-                        <img src="teaching.jpg" alt="Teaching photo" loading="lazy" onerror="this.remove()">
-                    </figure>
-                    <div class="activity-body">
-                        <span class="activity-tag">Teaching</span>
-                        <h3 class="activity-title">Teaching &amp; Mentoring</h3>
-                        <p class="activity-text">Placeholder text about your work as a teacher. Describe what you teach, who your students are, how long you have been teaching, and what you enjoy most about it. Two or three sentences work best here.</p>
-                    </div>
-                </article>
+            <div class="activities" role="region" aria-roledescription="carousel" aria-label="Co-activities">
+                <div class="activities-viewport">
+                    <div class="activities-track">
+                <div class="activity-slide">
+                    <article class="activity">
+                        <figure class="activity-media">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                            <span>Add photo</span>
+                            <img src="teaching.jpg" alt="Teaching photo" loading="lazy" onerror="this.remove()">
+                        </figure>
+                        <div class="activity-body">
+                            <span class="activity-tag">Teaching</span>
+                            <h3 class="activity-title">Teaching &amp; Mentoring</h3>
+                            <p class="activity-text">Placeholder text about your work as a teacher. Describe what you teach, who your students are, how long you have been teaching, and what you enjoy most about it. Two or three sentences work best here.</p>
+                        </div>
+                    </article>
+                </div>
 
-                <article class="activity">
-                    <figure class="activity-media">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                        <span>Add photo</span>
-                        <img src="chess.jpg" alt="Chess photo" loading="lazy" onerror="this.remove()">
-                    </figure>
-                    <div class="activity-body">
-                        <span class="activity-tag">Chess</span>
-                        <h3 class="activity-title">Chess Career</h3>
-                        <p class="activity-text">Placeholder text about your chess career. Mention the tournaments you have played, your rating or titles, and any highlights or achievements. Two or three sentences work best here.</p>
+                <div class="activity-slide">
+                    <article class="activity">
+                        <figure class="activity-media">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                            <span>Add photo</span>
+                            <img src="chess.jpg" alt="Chess photo" loading="lazy" onerror="this.remove()">
+                        </figure>
+                        <div class="activity-body">
+                            <span class="activity-tag">Chess</span>
+                            <h3 class="activity-title">Chess Career</h3>
+                            <p class="activity-text">Placeholder text about your chess career. Mention the tournaments you have played, your rating or titles, and any highlights or achievements. Two or three sentences work best here.</p>
+                        </div>
+                    </article>
+                </div>
                     </div>
-                </article>
+                </div>
+                <div class="activities-controls">
+                    <button class="act-arrow act-prev" type="button" aria-label="Previous activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+                    <div class="act-dots"></div>
+                    <button class="act-arrow act-next" type="button" aria-label="Next activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+                </div>
             </div>
         </div>
     </section>
@@ -1700,6 +1802,63 @@
         }, observerOptions);
 
         sections.forEach(section => sectionObserver.observe(section));
+
+        // Co-Activities carousel
+        (function () {
+            const root = document.querySelector('.activities');
+            if (!root) return;
+            const viewport = root.querySelector('.activities-viewport');
+            const track = root.querySelector('.activities-track');
+            const slides = Array.from(track.children);
+            const dotsWrap = root.querySelector('.act-dots');
+            const prev = root.querySelector('.act-prev');
+            const next = root.querySelector('.act-next');
+            const n = slides.length;
+            let index = 0;
+
+            if (n < 2) { root.querySelector('.activities-controls').hidden = true; return; }
+
+            const dots = slides.map((_, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'act-dot';
+                b.setAttribute('aria-label', 'Go to activity ' + (i + 1));
+                b.addEventListener('click', () => go(i));
+                dotsWrap.appendChild(b);
+                return b;
+            });
+
+            function go(i) {
+                index = (i + n) % n;
+                track.style.transform = 'translateX(-' + index * 100 + '%)';
+                dots.forEach((d, k) => {
+                    d.classList.toggle('active', k === index);
+                    d.setAttribute('aria-current', k === index ? 'true' : 'false');
+                });
+                slides.forEach((sl, k) => sl.setAttribute('aria-hidden', k === index ? 'false' : 'true'));
+            }
+
+            prev.addEventListener('click', () => go(index - 1));
+            next.addEventListener('click', () => go(index + 1));
+
+            root.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft') go(index - 1);
+                if (e.key === 'ArrowRight') go(index + 1);
+            });
+
+            // Swipe / drag
+            let startX = 0, startY = 0, tracking = false;
+            viewport.addEventListener('pointerdown', e => { startX = e.clientX; startY = e.clientY; tracking = true; });
+            viewport.addEventListener('pointerup', e => {
+                if (!tracking) return;
+                tracking = false;
+                const dx = e.clientX - startX, dy = e.clientY - startY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
+            });
+            viewport.addEventListener('pointercancel', () => { tracking = false; });
+
+            go(0);
+        })();
 
         // Research cards: expand / minimize (one open at a time)
         const papers = document.querySelectorAll('.paper');
