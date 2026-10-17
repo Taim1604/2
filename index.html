@@ -331,7 +331,7 @@
             align-items: center;
             justify-content: center;
             gap: 18px;
-            margin-top: 16px;
+            margin-top: 24px;
         }
 
         .act-arrow {
@@ -442,7 +442,15 @@
             text-transform: uppercase;
         }
 
+        .activity-links {
+            margin-top: 14px;
+        }
+
         .activity-media img {
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
             -webkit-user-drag: none;
             position: absolute;
             inset: 0;
@@ -458,21 +466,6 @@
             padding: 22px 26px;
         }
 
-        .activity-tag {
-            align-self: flex-start;
-            margin-bottom: 8px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--cream-bg);
-        }
-
-        .activity-slide:nth-child(1) .activity-tag { background: var(--progress-color); }
-        .activity-slide:nth-child(2) .activity-tag { background: #7a5030; }
-        .activity-slide:nth-child(3) .activity-tag { background: var(--ash-brown); }
-        .activity-slide:nth-child(4) .activity-tag { background: var(--dark-accent); }
 
         .activity-title {
             margin-bottom: 8px;
@@ -775,11 +768,13 @@
             box-shadow: 0 0 0 var(--dark-text);
         }
 
-        /* Desktop: tighter gap between buttons and footer */
+        /* Desktop: constant gap (80px + 80px) between Research, Co-Activities, Contact and the footer */
         @media (min-width: 769px) {
+            #rnd,
+            #co,
             #contact {
                 min-height: auto;
-                padding-top: 100px;
+                padding-top: 80px;
                 padding-bottom: 80px;
             }
 
@@ -1696,10 +1691,9 @@
                         <figure class="activity-media">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                             <span>Add photo</span>
-                            <img src="1.jpg" alt="Teaching photo" loading="lazy" onerror="this.remove()">
+                            <img src="1.jpg" alt="Teaching photo" draggable="false" loading="lazy" onerror="this.remove()">
                         </figure>
                         <div class="activity-body">
-                            <span class="activity-tag">Teaching</span>
                             <h3 class="activity-title">Teaching &amp; Mentoring</h3>
                             <p class="activity-text">Placeholder text about your work as a teacher. Describe what you teach, who your students are, how long you have been teaching, and what you enjoy most about it. Two or three sentences work best here.</p>
                         </div>
@@ -1711,12 +1705,14 @@
                         <figure class="activity-media">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                             <span>Add photo</span>
-                            <img src="2.jpg" alt="Chess photo" loading="lazy" onerror="this.remove()">
+                            <img src="2.jpg" alt="Chess photo" draggable="false" loading="lazy" onerror="this.remove()">
                         </figure>
                         <div class="activity-body">
-                            <span class="activity-tag">Chess</span>
                             <h3 class="activity-title">Chess Career</h3>
                             <p class="activity-text">Placeholder text about your chess career. Mention the tournaments you have played, your rating or titles, and any highlights or achievements. Two or three sentences work best here.</p>
+                            <div class="activity-links">
+                                <a class="paper-link" href="https://www.chess.com/" target="_blank" rel="noopener noreferrer" aria-label="View Chess.com profile">View Chess.com <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></a>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -1725,10 +1721,9 @@
                         <figure class="activity-media">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                             <span>Add photo</span>
-                            <img src="3.jpg" alt="Music photo" loading="lazy" onerror="this.remove()">
+                            <img src="3.jpg" alt="Music photo" draggable="false" loading="lazy" onerror="this.remove()">
                         </figure>
                         <div class="activity-body">
-                            <span class="activity-tag">Music</span>
                             <h3 class="activity-title">Music Career</h3>
                             <p class="activity-text">Placeholder text about your music career. Mention the instruments or genres you play, performances, albums or collaborations, and what music means to you. Two or three sentences work best here.</p>
                         </div>
@@ -1739,12 +1734,14 @@
                         <figure class="activity-media">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                             <span>Add photo</span>
-                            <img src="4.jpg" alt="World record photo" loading="lazy" onerror="this.remove()">
+                            <img src="4.jpg" alt="World record photo" draggable="false" loading="lazy" onerror="this.remove()">
                         </figure>
                         <div class="activity-body">
-                            <span class="activity-tag">World Record</span>
                             <h3 class="activity-title">World Record</h3>
                             <p class="activity-text">Placeholder text about your world record. Describe what the record is for, when and where it was set, and how it was verified. Two or three sentences work best here.</p>
+                            <div class="activity-links">
+                                <a class="paper-link" href="https://example.com/" target="_blank" rel="noopener noreferrer" aria-label="Learn more about world record">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></a>
+                            </div>
                         </div>
                     </article>
                 </div>
@@ -1882,6 +1879,11 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
+        // Block right-click / long-press "save image" on activity photos
+        document.addEventListener('contextmenu', e => {
+            if (e.target.closest && e.target.closest('.activity-media')) e.preventDefault();
+        });
+
         // Retro I-beam cursor: only while the mouse is over actual text
         (function () {
             if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
@@ -1970,6 +1972,7 @@
 
             viewport.addEventListener('pointerdown', e => {
                 if (e.pointerType === 'mouse' && e.button !== 0) return;
+                if (e.target.closest('a')) return;
                 dragging = true;
                 startX = e.clientX;
                 startT = performance.now();
