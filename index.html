@@ -1570,24 +1570,23 @@
             animation: loader-spin 1s linear infinite;
         }
 
-        /* planes and an F1 car passing in the background */
+        /* a plane flying diagonally away into the page */
         #loader { overflow: hidden; }
 
-        .loader-plane,
-        .loader-car {
+        .loader-plane {
             position: absolute;
+            top: 24%;
             left: 0;
             display: flex;
             align-items: center;
-            will-change: transform;
-        }
-
-        .loader-plane {
-            top: 24%;
             animation: plane-fly 6s linear infinite;
+            will-change: transform, opacity;
         }
 
-        .loader-plane svg { width: 88px; height: 30px; }
+        .loader-plane svg {
+            width: 88px;
+            height: 30px;
+        }
 
         .plane-trail {
             width: 160px;
@@ -1597,66 +1596,41 @@
             background: linear-gradient(to right, rgba(245, 241, 234, 0), rgba(245, 241, 234, 0.75));
         }
 
-        .loader-plane.far {
-            top: 64%;
-            opacity: 0.55;
-            animation-duration: 9s;
-            animation-delay: -4s;
+        .loader-plane.from-right {
+            top: 62%;
+            animation-name: plane-fly-left;
+            animation-delay: -3s;
         }
 
-        .loader-plane.far svg { width: 58px; height: 20px; }
-        .loader-plane.far .plane-trail { width: 110px; height: 2px; }
-
-        /* planes climb diagonally (constant 12 degree angle on any screen width) */
-        @keyframes plane-fly {
-            from { transform: translate3d(-300px, calc(10.65vw + 38px), 0) rotate(-12deg); }
-            to { transform: translate3d(calc(100vw + 60px), calc(-10.65vw - 38px), 0) rotate(-12deg); }
-        }
-
-        .loader-car {
-            bottom: 9%;
-            animation: car-drive 3.4s linear infinite;
-        }
-
-        .loader-car svg {
-            width: 170px;
-            height: 47px;
-            animation: car-shake 0.12s ease-in-out infinite alternate;
-        }
-
-        .car-streaks {
+        .plane-flip {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-            margin-right: 6px;
+            align-items: center;
+            transform: scaleX(-1);
         }
 
-        .car-streaks span {
-            display: block;
-            height: 2px;
-            border-radius: 2px;
-            background: linear-gradient(to right, rgba(245, 241, 234, 0), rgba(245, 241, 234, 0.65));
+        /* starts big and close (bottom-left), climbs at a constant 12 degree angle,
+           and shrinks and fades as if flying away into the distance */
+        @keyframes plane-fly {
+            from {
+                transform: translate3d(-300px, calc(10.65vw + 38px), 0) rotate(-12deg) scale(1.6);
+                opacity: 1;
+            }
+            to {
+                transform: translate3d(calc(100vw + 60px), calc(-10.65vw - 38px), 0) rotate(-12deg) scale(0.25);
+                opacity: 0.15;
+            }
         }
 
-        .car-streaks span:nth-child(1) { width: 90px; }
-        .car-streaks span:nth-child(2) { width: 150px; }
-        .car-streaks span:nth-child(3) { width: 60px; }
-
-        .car-wheel {
-            transform-box: fill-box;
-            transform-origin: center;
-            animation: loader-spin 0.3s linear infinite;
-        }
-
-        @keyframes car-drive {
-            from { transform: translate3d(-420px, 0, 0); }
-            to { transform: translate3d(calc(100vw + 60px), 0, 0); }
-        }
-
-        @keyframes car-shake {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1.5px); }
+        /* second plane: arrives from the bottom-right, climbing up and away to the left */
+        @keyframes plane-fly-left {
+            from {
+                transform: translate3d(calc(100vw + 300px), calc(10.65vw + 38px), 0) rotate(12deg) scale(1.6);
+                opacity: 1;
+            }
+            to {
+                transform: translate3d(-360px, calc(-10.65vw - 38px), 0) rotate(12deg) scale(0.25);
+                opacity: 0.15;
+            }
         }
 
         @keyframes loader-spin {
@@ -1665,8 +1639,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             .loader-spinner::after { animation-duration: 2.5s; }
-            .loader-plane,
-            .loader-car { display: none; }
+            .loader-plane { display: none; }
         }
 
         /* Retro pixel cursors (desktop) */
@@ -1714,11 +1687,7 @@
     <div id="loader" role="status" aria-live="polite" aria-label="Loading">
         <div class="loader-spinner" aria-hidden="true"></div>
         <div class="loader-plane" aria-hidden="true"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div>
-        <div class="loader-plane far" aria-hidden="true"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div>
-        <div class="loader-car" aria-hidden="true">
-            <div class="car-streaks"><span></span><span></span><span></span></div>
-            <svg viewBox="0 0 160 44" aria-hidden="true"><rect x="4" y="5" width="20" height="3" fill="#f5f1ea"/><rect x="11" y="8" width="3" height="16" fill="#e4dccd"/><polygon points="10,34 10,21 58,19 100,24 152,30 152,34" fill="#f5f1ea"/><polygon points="40,22 52,12 68,12 70,22" fill="#e4dccd"/><path d="M70 21 Q78 9 90 14 L96 23 Z" fill="#1a1a1a"/><rect x="134" y="32" width="24" height="3" fill="#f5f1ea"/><g class="car-wheel"><circle cx="34" cy="33" r="10" fill="#1a1a1a"/><path d="M27 33H41M34 26V40" stroke="#f5f1ea" stroke-width="2"/></g><g class="car-wheel"><circle cx="122" cy="34" r="8" fill="#1a1a1a"/><path d="M116.5 34H127.5M122 28.5V39.5" stroke="#f5f1ea" stroke-width="2"/></g></svg>
-        </div>
+        <div class="loader-plane from-right" aria-hidden="true"><div class="plane-flip"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div></div>
     </div>
     <noscript><style>#loader { display: none; }</style></noscript>
     <script>
@@ -2066,6 +2035,14 @@
         }, observerOptions);
 
         sections.forEach(section => sectionObserver.observe(section));
+
+        // Logo click: refresh the page without adding "#" to the URL or a new history entry
+        document.getElementById('logo-link').addEventListener('click', e => {
+            e.preventDefault();
+            history.replaceState(null, '', location.pathname + location.search);
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            location.reload();
+        });
 
         // Block right-click / long-press "save image" on activity photos
         document.addEventListener('contextmenu', e => {
