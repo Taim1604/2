@@ -287,11 +287,13 @@
         /* Co-Activities */
         #co .section-content {
             width: 100%;
+            min-width: 0;
             max-width: 840px;
         }
 
         .activities {
             width: 100%;
+            min-width: 0;
             margin: 32px auto 0;
             text-align: left;
         }
@@ -331,7 +333,7 @@
             align-items: center;
             justify-content: center;
             gap: 18px;
-            margin-top: 24px;
+            margin-top: 28px;
         }
 
         .act-arrow {
@@ -443,7 +445,7 @@
         }
 
         .activity-links {
-            margin-top: 14px;
+            margin-top: 15.67px;
         }
 
         .activity-media img {
@@ -462,13 +464,13 @@
         .activity-body {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 22px 26px;
         }
 
 
         .activity-title {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 1.4rem;
             font-weight: 800;
             line-height: 1.25;
@@ -484,12 +486,15 @@
         @media (max-width: 768px) {
             .activity,
             .activity-slide:nth-child(even) .activity {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: auto 1fr;
             }
 
             .activity-media,
             .activity-slide:nth-child(even) .activity-media {
                 order: 0;
+                align-self: start;
+                width: 100%;
                 min-height: 0;
                 aspect-ratio: 16 / 9;
                 border-left: 0;
@@ -498,6 +503,7 @@
             }
 
             .activity-body { padding: 26.5px 20px; }
+            .activity-title { margin-bottom: 16px; }
         }
 
         @media (max-width: 480px) {
@@ -1515,6 +1521,154 @@
             }
         }
 
+        /* Desktop only: tighter spacing between footer navigation links */
+        @media (min-width: 769px) {
+            .footer-links { gap: 28px; }
+        }
+
+        /* Loading screen */
+        html.loading {
+            overflow: hidden;
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            background: var(--ash-brown);
+            transition: opacity 0.6s ease, visibility 0s 0.6s;
+        }
+
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border: 2px solid rgba(245, 241, 234, 0.2);
+            border-radius: 50%;
+        }
+
+        /* thin ring with a fading comet-tail arc */
+        .loader-spinner::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(245, 241, 234, 0) 0%, var(--cream-bg) 100%);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2.5px));
+            animation: loader-spin 1s linear infinite;
+        }
+
+        /* planes and an F1 car passing in the background */
+        #loader { overflow: hidden; }
+
+        .loader-plane,
+        .loader-car {
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            will-change: transform;
+        }
+
+        .loader-plane {
+            top: 24%;
+            animation: plane-fly 6s linear infinite;
+        }
+
+        .loader-plane svg { width: 88px; height: 30px; }
+
+        .plane-trail {
+            width: 160px;
+            height: 3px;
+            margin-right: -6px;
+            border-radius: 2px;
+            background: linear-gradient(to right, rgba(245, 241, 234, 0), rgba(245, 241, 234, 0.75));
+        }
+
+        .loader-plane.far {
+            top: 64%;
+            opacity: 0.55;
+            animation-duration: 9s;
+            animation-delay: -4s;
+        }
+
+        .loader-plane.far svg { width: 58px; height: 20px; }
+        .loader-plane.far .plane-trail { width: 110px; height: 2px; }
+
+        /* planes climb diagonally (constant 12 degree angle on any screen width) */
+        @keyframes plane-fly {
+            from { transform: translate3d(-300px, calc(10.65vw + 38px), 0) rotate(-12deg); }
+            to { transform: translate3d(calc(100vw + 60px), calc(-10.65vw - 38px), 0) rotate(-12deg); }
+        }
+
+        .loader-car {
+            bottom: 9%;
+            animation: car-drive 3.4s linear infinite;
+        }
+
+        .loader-car svg {
+            width: 170px;
+            height: 47px;
+            animation: car-shake 0.12s ease-in-out infinite alternate;
+        }
+
+        .car-streaks {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            margin-right: 6px;
+        }
+
+        .car-streaks span {
+            display: block;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(to right, rgba(245, 241, 234, 0), rgba(245, 241, 234, 0.65));
+        }
+
+        .car-streaks span:nth-child(1) { width: 90px; }
+        .car-streaks span:nth-child(2) { width: 150px; }
+        .car-streaks span:nth-child(3) { width: 60px; }
+
+        .car-wheel {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: loader-spin 0.3s linear infinite;
+        }
+
+        @keyframes car-drive {
+            from { transform: translate3d(-420px, 0, 0); }
+            to { transform: translate3d(calc(100vw + 60px), 0, 0); }
+        }
+
+        @keyframes car-shake {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1.5px); }
+        }
+
+        @keyframes loader-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .loader-spinner::after { animation-duration: 2.5s; }
+            .loader-plane,
+            .loader-car { display: none; }
+        }
+
         /* Retro pixel cursors (desktop) */
         html, body {
             cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAgUlEQVR42s3UQQrAIAwEwLX0Fcn/n2a+YU/bQyhYbYzNSYLIuIRARJqINATVgeC6H4yShgtPHmqtAABVbQBgZuVfwijpeuFXaZ5wVpovHJXuE76V7hOq6mOfG4rS9UJKmJWv9DksfktTwL6X8gf5czi7oddn2LswmmW+0Et7mYcLLzVGUF3j+JAuAAAAAElFTkSuQmCC") 0 0, auto !important;
@@ -1557,6 +1711,40 @@
     </style>
 </head>
 <body>
+    <div id="loader" role="status" aria-live="polite" aria-label="Loading">
+        <div class="loader-spinner" aria-hidden="true"></div>
+        <div class="loader-plane" aria-hidden="true"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div>
+        <div class="loader-plane far" aria-hidden="true"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div>
+        <div class="loader-car" aria-hidden="true">
+            <div class="car-streaks"><span></span><span></span><span></span></div>
+            <svg viewBox="0 0 160 44" aria-hidden="true"><rect x="4" y="5" width="20" height="3" fill="#f5f1ea"/><rect x="11" y="8" width="3" height="16" fill="#e4dccd"/><polygon points="10,34 10,21 58,19 100,24 152,30 152,34" fill="#f5f1ea"/><polygon points="40,22 52,12 68,12 70,22" fill="#e4dccd"/><path d="M70 21 Q78 9 90 14 L96 23 Z" fill="#1a1a1a"/><rect x="134" y="32" width="24" height="3" fill="#f5f1ea"/><g class="car-wheel"><circle cx="34" cy="33" r="10" fill="#1a1a1a"/><path d="M27 33H41M34 26V40" stroke="#f5f1ea" stroke-width="2"/></g><g class="car-wheel"><circle cx="122" cy="34" r="8" fill="#1a1a1a"/><path d="M116.5 34H127.5M122 28.5V39.5" stroke="#f5f1ea" stroke-width="2"/></g></svg>
+        </div>
+    </div>
+    <noscript><style>#loader { display: none; }</style></noscript>
+    <script>
+        // Loading screen: hides when the page has loaded, or after 4.67s at most (counted from page start)
+        (function () {
+            const loader = document.getElementById('loader');
+            const root = document.documentElement;
+            const MIN = 600, MAX = 4670;
+            let done = false;
+            root.classList.add('loading');
+
+            function hide() {
+                if (done) return;
+                done = true;
+                loader.classList.add('hide');
+                root.classList.remove('loading');
+                setTimeout(() => loader.remove(), 800);
+            }
+
+            function ready() { setTimeout(hide, Math.max(0, MIN - performance.now())); }
+
+            if (document.readyState === 'complete') ready();
+            else window.addEventListener('load', ready, { once: true });
+            setTimeout(hide, Math.max(0, MAX - performance.now()));
+        })();
+    </script>
     <!-- Floating particles background -->
     <canvas id="particles" aria-hidden="true"></canvas>
 
@@ -2065,8 +2253,11 @@
                 };
             }
 
+            let lastW = 0;
+
             function resize() {
                 const dpr = window.devicePixelRatio || 1;
+                const prevH = h;
                 w = window.innerWidth;
                 h = window.innerHeight;
                 canvas.width = Math.round(w * dpr);
@@ -2074,8 +2265,15 @@
                 canvas.style.width = w + 'px';
                 canvas.style.height = h + 'px';
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                const count = Math.min(70, Math.max(18, Math.round((w * h) / 18000)));
-                particles = Array.from({ length: count }, () => createParticle(true));
+                if (!particles.length || w !== lastW) {
+                    // only rebuild when the width changes (not when the mobile address bar shows/hides)
+                    lastW = w;
+                    const count = Math.min(70, Math.max(18, Math.round((w * h) / 18000)));
+                    particles = Array.from({ length: count }, () => createParticle(true));
+                } else if (prevH && prevH !== h) {
+                    const k = h / prevH;
+                    particles.forEach(p => { p.y *= k; });
+                }
                 draw();
             }
 
