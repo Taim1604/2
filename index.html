@@ -326,14 +326,13 @@
         }
 
         .activity-slide {
-            display: flex;
+            display: grid;
             flex: 0 0 100%;
             min-width: 0;
             padding: 2px 8px 8px 2px;
         }
 
         .activity-slide .activity {
-            flex: 1;
             min-width: 0;
         }
 
@@ -514,13 +513,50 @@
                 border-bottom: 2px solid var(--dark-text);
             }
 
-            .activity-body { padding: 26.5px 20px; }
+            .activity-body {
+                height: 260px;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--ash-brown) transparent;
+                padding: 26.5px 20px;
+            }
             .activity-title { margin-bottom: 16px; }
         }
 
         @media (max-width: 480px) {
             .activity-title { font-size: 1.25rem; }
             .activity-text { font-size: 0.95rem; }
+        }
+
+        /* Desktop: slightly larger activity boxes */
+        @media (min-width: 769px) {
+            #co .section-content { max-width: 920px; }
+
+            /* fixed-size boxes: long text scrolls inside the box instead of growing it */
+            .activity,
+            .activity-slide:nth-child(even) .activity {
+                height: 247px;
+                grid-template-rows: minmax(0, 1fr);
+            }
+
+            .activity { grid-template-columns: 364px minmax(0, 1fr); }
+            .activity-slide:nth-child(even) .activity { grid-template-columns: minmax(0, 1fr) 364px; }
+
+            .activity-media {
+                aspect-ratio: auto;
+                height: 100%;
+            }
+
+            .activity-body {
+                min-height: 0;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--ash-brown) transparent;
+            }
+
+            .activity-body { padding: 26px 30px; }
+            .activity-title { font-size: 1.5rem; }
+            .activity-text { font-size: 1.02rem; }
         }
 
         /* Research & Publications */
