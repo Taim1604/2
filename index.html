@@ -12,6 +12,15 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Images (all of them, including future ones): no dragging, selecting, long-press or right-click saving */
+        img {
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+        }
+
         :root {
             --cream-bg: #f5f1ea;
             --dark-text: #1a1a1a;
@@ -357,11 +366,13 @@
             height: 20px;
         }
 
-        .act-arrow:hover {
-            background: var(--dark-text);
-            color: var(--cream-bg);
-            transform: translate(1px, 1px);
-            box-shadow: 2px 2px 0 var(--dark-text);
+        @media (hover: hover) {
+            .act-arrow:hover {
+                background: var(--dark-text);
+                color: var(--cream-bg);
+                transform: translate(1px, 1px);
+                box-shadow: 2px 2px 0 var(--dark-text);
+            }
         }
 
         .act-arrow:active {
@@ -2050,9 +2061,18 @@
             });
         });
 
-        // Block right-click / long-press "save image" on activity photos
+        // Block right-click / long-press on every image (works for any image added later too)
         document.addEventListener('contextmenu', e => {
-            if (e.target.closest && e.target.closest('.activity-media')) e.preventDefault();
+            for (const img of document.images) {
+                const r = img.getBoundingClientRect();
+                if (r.width && r.height && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+        });
+        document.addEventListener('dragstart', e => {
+            if (e.target.tagName === 'IMG') e.preventDefault();
         });
 
         // Retro I-beam cursor: only while the mouse is over actual text
