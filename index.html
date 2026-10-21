@@ -419,7 +419,8 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            min-height: 220px;
+            min-height: 0;
+            aspect-ratio: 3 / 2;
             margin: 0;
             background: var(--ash-brown);
             color: var(--cream-bg);
@@ -496,7 +497,7 @@
                 align-self: start;
                 width: 100%;
                 min-height: 0;
-                aspect-ratio: 16 / 9;
+                aspect-ratio: 3 / 2;
                 border-left: 0;
                 border-right: 0;
                 border-bottom: 2px solid var(--dark-text);
@@ -1523,7 +1524,7 @@
 
         /* Desktop only: tighter spacing between footer navigation links */
         @media (min-width: 769px) {
-            .footer-links { gap: 28px; }
+            .footer-links { gap: 20px; }
         }
 
         /* Loading screen */
