@@ -530,17 +530,17 @@
 
         /* Desktop: slightly larger activity boxes */
         @media (min-width: 769px) {
-            #co .section-content { max-width: 920px; }
+            #co .section-content { max-width: 847px; }
 
             /* fixed-size boxes: long text scrolls inside the box instead of growing it */
             .activity,
             .activity-slide:nth-child(even) .activity {
-                height: 247px;
+                height: 227px;
                 grid-template-rows: minmax(0, 1fr);
             }
 
-            .activity { grid-template-columns: 364px minmax(0, 1fr); }
-            .activity-slide:nth-child(even) .activity { grid-template-columns: minmax(0, 1fr) 364px; }
+            .activity { grid-template-columns: 335px minmax(0, 1fr); }
+            .activity-slide:nth-child(even) .activity { grid-template-columns: minmax(0, 1fr) 335px; }
 
             .activity-media {
                 aspect-ratio: auto;
@@ -554,9 +554,10 @@
                 scrollbar-color: var(--ash-brown) transparent;
             }
 
-            .activity-body { padding: 26px 30px; }
-            .activity-title { font-size: 1.5rem; }
-            .activity-text { font-size: 1.02rem; }
+            .activity-body { padding: 24px 28px 17px; }
+            .activities-controls { margin-top: 36px; }
+            .activity-title { font-size: 1.38rem; }
+            .activity-text { font-size: 0.94rem; }
         }
 
         /* Research & Publications */
