@@ -372,7 +372,10 @@
             box-shadow: 2px 2px 0 var(--dark-text);
         }
 
-        .act-arrow:active {
+        .act-arrow:active,
+        .act-arrow.is-pressed {
+            background: var(--dark-text);
+            color: var(--cream-bg);
             transform: translate(3px, 3px);
             box-shadow: 0 0 0 var(--dark-text);
         }
@@ -2191,9 +2194,13 @@
             [prev, next].forEach(btn => {
                 btn.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') btn.classList.add('is-hover'); });
                 btn.addEventListener('pointerleave', () => btn.classList.remove('is-hover'));
-                btn.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') btn.classList.remove('is-hover'); });
-                btn.addEventListener('pointerup', e => {
-                    if (e.pointerType !== 'mouse') { btn.classList.remove('is-hover'); btn.blur(); }
+                // dark pressed look only while the button is held down
+                btn.addEventListener('pointerdown', () => { btn.classList.remove('is-hover'); btn.classList.add('is-pressed'); });
+                ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+                    btn.addEventListener(type, e => {
+                        btn.classList.remove('is-pressed');
+                        if (type === 'pointerup' && e.pointerType !== 'mouse') { btn.classList.remove('is-hover'); btn.blur(); }
+                    });
                 });
             });
 
