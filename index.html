@@ -1570,67 +1570,42 @@
             animation: loader-spin 1s linear infinite;
         }
 
-        /* a plane flying diagonally away into the page */
+        /* maple leaves falling */
         #loader { overflow: hidden; }
 
-        .loader-plane {
+        .loader-fall {
             position: absolute;
-            top: 24%;
-            left: 0;
-            display: flex;
-            align-items: center;
-            animation: plane-fly 6s linear infinite;
-            will-change: transform, opacity;
+            inset: 0;
+            pointer-events: none;
         }
 
-        .loader-plane svg {
-            width: 88px;
-            height: 30px;
+        .fall-item {
+            position: absolute;
+            top: 0;
+            will-change: transform;
+            animation: fall-down 9s linear infinite;
         }
 
-        .plane-trail {
-            width: 160px;
-            height: 3px;
-            margin-right: -6px;
-            border-radius: 2px;
-            background: linear-gradient(to right, rgba(245, 241, 234, 0), rgba(245, 241, 234, 0.75));
+        .fall-item .sway {
+            display: block;
+            animation: fall-sway 3s ease-in-out infinite alternate;
         }
 
-        .loader-plane.from-right {
-            top: 62%;
-            animation-name: plane-fly-left;
-            animation-delay: -3s;
+        .fall-item.leaf .sway svg {
+            display: block;
+            width: var(--s, 18px);
+            height: var(--s, 18px);
+            fill: var(--c, var(--cream-bg));
         }
 
-        .plane-flip {
-            display: flex;
-            align-items: center;
-            transform: scaleX(-1);
+        @keyframes fall-down {
+            from { transform: translate3d(0, -40px, 0); }
+            to { transform: translate3d(0, calc(100vh + 40px), 0); }
         }
 
-        /* starts big and close (bottom-left), climbs at a constant 12 degree angle,
-           and shrinks and fades as if flying away into the distance */
-        @keyframes plane-fly {
-            from {
-                transform: translate3d(-300px, calc(10.65vw + 38px), 0) rotate(-12deg) scale(1.6);
-                opacity: 1;
-            }
-            to {
-                transform: translate3d(calc(100vw + 60px), calc(-10.65vw - 38px), 0) rotate(-12deg) scale(0.25);
-                opacity: 0.15;
-            }
-        }
-
-        /* second plane: arrives from the bottom-right, climbing up and away to the left */
-        @keyframes plane-fly-left {
-            from {
-                transform: translate3d(calc(100vw + 300px), calc(10.65vw + 38px), 0) rotate(12deg) scale(1.6);
-                opacity: 1;
-            }
-            to {
-                transform: translate3d(-360px, calc(-10.65vw - 38px), 0) rotate(12deg) scale(0.25);
-                opacity: 0.15;
-            }
+        @keyframes fall-sway {
+            from { transform: translateX(-16px) rotate(var(--r0, -20deg)); }
+            to { transform: translateX(16px) rotate(var(--r1, 20deg)); }
         }
 
         @keyframes loader-spin {
@@ -1639,7 +1614,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             .loader-spinner::after { animation-duration: 2.5s; }
-            .loader-plane { display: none; }
+            .loader-fall { display: none; }
         }
 
         /* Retro pixel cursors (desktop) */
@@ -1685,9 +1660,8 @@
 </head>
 <body>
     <div id="loader" role="status" aria-live="polite" aria-label="Loading">
+        <div class="loader-fall" aria-hidden="true"></div>
         <div class="loader-spinner" aria-hidden="true"></div>
-        <div class="loader-plane" aria-hidden="true"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div>
-        <div class="loader-plane from-right" aria-hidden="true"><div class="plane-flip"><div class="plane-trail"></div><svg viewBox="0 0 120 40" aria-hidden="true"><polygon points="6,4 20,4 32,16 14,16" fill="#f5f1ea"/><polygon points="50,22 80,22 64,38 44,38" fill="#e4dccd"/><path d="M10 22 Q10 15 24 15 L92 15 Q113 17 116 21 Q113 25 92 27 L24 27 Q10 27 10 22 Z" fill="#f5f1ea"/><path d="M92 16.5 Q104 16.5 109 20.5 L92 20.5 Z" fill="#8b7d6b"/><g fill="#8b7d6b"><rect x="30" y="18" width="5" height="3" rx="1"/><rect x="40" y="18" width="5" height="3" rx="1"/><rect x="50" y="18" width="5" height="3" rx="1"/><rect x="60" y="18" width="5" height="3" rx="1"/><rect x="70" y="18" width="5" height="3" rx="1"/></g></svg></div></div>
     </div>
     <noscript><style>#loader { display: none; }</style></noscript>
     <script>
@@ -1695,6 +1669,34 @@
         (function () {
             const loader = document.getElementById('loader');
             const root = document.documentElement;
+            // falling maple leaves
+            const fall = loader.querySelector('.loader-fall');
+            const small = window.innerWidth < 600;
+            const leafColors = ['#f5f1ea'];
+            const leafSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,1 14,5.2 16.2,4 15.6,8.6 19.8,6.8 18.6,11.2 22.5,12.2 18.8,15.6 19.6,18 13.2,16.8 13.2,22 10.8,22 10.8,16.8 4.4,18 5.2,15.6 1.5,12.2 5.4,11.2 4.2,6.8 8.4,8.6 7.8,4 10,5.2"/></svg>';
+            const rand = (a, b) => a + Math.random() * (b - a);
+
+            function addFall(type) {
+                const item = document.createElement('span');
+                item.className = 'fall-item ' + type;
+                item.style.left = rand(0, 100) + '%';
+                item.style.animationDuration = rand(7, 12) + 's';
+                item.style.animationDelay = -rand(0, 12) + 's';
+                const sway = document.createElement('span');
+                sway.className = 'sway';
+                sway.style.animationDuration = rand(2.2, 4.5) + 's';
+                sway.style.animationDelay = -rand(0, 4) + 's';
+                sway.style.setProperty('--s', rand(14, 24) + 'px');
+                sway.style.setProperty('--c', leafColors[Math.floor(Math.random() * leafColors.length)]);
+                sway.style.setProperty('--r0', rand(-80, -20) + 'deg');
+                sway.style.setProperty('--r1', rand(20, 120) + 'deg');
+                sway.innerHTML = leafSvg;
+                item.appendChild(sway);
+                fall.appendChild(item);
+            }
+
+            for (let i = 0; i < (small ? 10 : 16); i++) addFall('leaf');
+
             const MIN = 600, MAX = 4670;
             let done = false;
             root.classList.add('loading');
@@ -2036,12 +2038,15 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
-        // Logo click: refresh the page without adding "#" to the URL or a new history entry
-        document.getElementById('logo-link').addEventListener('click', e => {
-            e.preventDefault();
-            history.replaceState(null, '', location.pathname + location.search);
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            location.reload();
+        // Logo, menu and footer links: smooth scroll without adding "#" or history entries
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const hash = a.getAttribute('href');
+                const target = hash.length > 1 ? document.querySelector(hash) : null;
+                if (!target || hash === '#home') window.scrollTo({ top: 0, behavior: 'smooth' });
+                else target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         });
 
         // Block right-click / long-press "save image" on activity photos
