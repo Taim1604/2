@@ -365,7 +365,7 @@
             height: 20px;
         }
 
-        .act-arrow:hover {
+        .act-arrow.is-hover {
             background: var(--dark-text);
             color: var(--cream-bg);
             transform: translate(1px, 1px);
@@ -471,6 +471,7 @@
         }
 
         .activity-body {
+            touch-action: pan-y;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -2185,6 +2186,16 @@
 
             prev.addEventListener('click', () => go(index - 1));
             next.addEventListener('click', () => go(index + 1));
+
+            // hover look only for a real mouse; touch taps never leave the arrow stuck in the pressed look
+            [prev, next].forEach(btn => {
+                btn.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') btn.classList.add('is-hover'); });
+                btn.addEventListener('pointerleave', () => btn.classList.remove('is-hover'));
+                btn.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') btn.classList.remove('is-hover'); });
+                btn.addEventListener('pointerup', e => {
+                    if (e.pointerType !== 'mouse') { btn.classList.remove('is-hover'); btn.blur(); }
+                });
+            });
 
             root.addEventListener('keydown', e => {
                 if (e.key === 'ArrowLeft') go(index - 1);
