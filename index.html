@@ -250,6 +250,10 @@
         }
 
         .hero-content h1 {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            text-wrap: balance;
             font-size: 3.5rem;
             margin-bottom: 10px;
             font-weight: 900;
@@ -1583,9 +1587,51 @@
             }
         }
 
+        /* Desktop only: bring the home content closer to the navbar (85px navbar + 100px gap) */
+        @media (min-width: 769px) {
+            #home {
+                min-height: auto;
+                padding-top: 185px;
+                padding-bottom: 100px;
+            }
+        }
+
         /* Desktop only: tighter spacing between footer navigation links */
         @media (min-width: 769px) {
             .footer-links { gap: 20px; }
+        }
+
+        /* Typewriter effect for the home text */
+        .tw-word {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .tw-char {
+            position: relative;
+            visibility: hidden;
+        }
+
+        .tw-char.on { visibility: visible; }
+
+        .tw-char.cur::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 8%;
+            bottom: 8%;
+            width: 3px;
+            background: currentColor;
+            animation: tw-blink 0.8s steps(1) infinite;
+        }
+
+        .tagline .tw-char.cur::after {
+            width: 2px;
+            right: -2px;
+        }
+
+        @keyframes tw-blink {
+            50% { opacity: 0; }
         }
 
         /* Loading screen */
@@ -1768,6 +1814,7 @@
                 done = true;
                 loader.classList.add('hide');
                 root.classList.remove('loading');
+                document.dispatchEvent(new Event('loader-hidden'));
                 setTimeout(() => loader.remove(), 800);
             }
 
@@ -1813,8 +1860,8 @@
     <main id="home">
         <div class="hero-content">
             <div class="hero-accent"></div>
-            <h1>Creative Developer</h1>
-            <p class="tagline">Crafting digital experiences with artistic precision.</p>
+            <h1>Yooo greetings from an Electrical &amp; Electronic Engineer</h1>
+            <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
         </div>
     </main>
 
@@ -2099,6 +2146,65 @@
         }, observerOptions);
 
         sections.forEach(section => sectionObserver.observe(section));
+
+        // Home text: typed from left to right (heading first, then the line below), after the loading screen
+        (function () {
+            const h1 = document.querySelector('.hero-content h1');
+            const tag = document.querySelector('.hero-content .tagline');
+            if (!h1 || !tag) return;
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function prepare(el) {
+                const text = el.textContent.trim();
+                const wrap = document.createElement('span');
+                const chars = [];
+                el.setAttribute('aria-label', text);
+                wrap.setAttribute('aria-hidden', 'true');
+                text.split(' ').forEach((word, i, words) => {
+                    const w = document.createElement('span');
+                    w.className = 'tw-word';
+                    for (const ch of word) {
+                        const c = document.createElement('span');
+                        c.className = 'tw-char';
+                        c.textContent = ch;
+                        w.appendChild(c);
+                        chars.push(c);
+                    }
+                    wrap.appendChild(w);
+                    if (i < words.length - 1) wrap.appendChild(document.createTextNode(' '));
+                });
+                el.textContent = '';
+                el.appendChild(wrap);
+                return chars;
+            }
+
+            const headChars = prepare(h1);
+            const tagChars = prepare(tag);
+
+            function type(chars, delay, done) {
+                let i = 0, prev = null;
+                const timer = setInterval(() => {
+                    if (prev) prev.classList.remove('cur');
+                    if (i >= chars.length) { clearInterval(timer); if (done) done(prev); return; }
+                    prev = chars[i++];
+                    prev.classList.add('on', 'cur');
+                }, delay);
+            }
+
+            function start() {
+                if (reduce) { headChars.concat(tagChars).forEach(c => c.classList.add('on')); return; }
+                type(headChars, 45, last => {
+                    if (last) last.classList.remove('cur');
+                    setTimeout(() => type(tagChars, 32, lastTag => {
+                        if (lastTag) { lastTag.classList.add('cur'); setTimeout(() => lastTag.classList.remove('cur'), 2500); }
+                    }), 250);
+                });
+            }
+
+            const loaderEl = document.getElementById('loader');
+            if (!loaderEl || loaderEl.classList.contains('hide')) start();
+            else document.addEventListener('loader-hidden', () => setTimeout(start, 300), { once: true });
+        })();
 
         // Logo, menu and footer links: smooth scroll without adding "#" or history entries
         document.querySelectorAll('a[href^="#"]').forEach(a => {
