@@ -254,7 +254,7 @@
             margin-left: auto;
             margin-right: auto;
             text-wrap: balance;
-            font-size: 3.5rem;
+            font-size: 3.15rem;
             margin-bottom: 10px;
             font-weight: 900;
             letter-spacing: -2px;
@@ -1033,7 +1033,7 @@
             }
 
             .hero-content h1 {
-                font-size: 3.2rem;
+                font-size: 2.9rem;
             }
 
 
@@ -1084,7 +1084,7 @@
             }
 
             .hero-content h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
                 letter-spacing: -1px;
             }
 
@@ -1190,7 +1190,7 @@
             }
 
             .hero-content h1 {
-                font-size: 2.2rem;
+                font-size: 2.0rem;
                 letter-spacing: -1px;
                 margin-bottom: 8px;
             }
@@ -1350,7 +1350,7 @@
             }
 
             .hero-content h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
                 letter-spacing: 0;
             }
 
@@ -1520,7 +1520,7 @@
             }
 
             .hero-content h1 {
-                font-size: 1.5rem;
+                font-size: 1.35rem;
             }
 
             .hero-content .tagline {
@@ -1587,12 +1587,12 @@
             }
         }
 
-        /* Desktop only: bring the home content closer to the navbar (85px navbar + 100px gap) */
+        /* Desktop only: bring the home content closer to the navbar (85px gap below the navbar) */
         @media (min-width: 769px) {
             #home {
                 min-height: auto;
-                padding-top: 185px;
-                padding-bottom: 100px;
+                padding-top: 85px;
+                padding-bottom: 80px;
             }
         }
 
@@ -1614,6 +1614,10 @@
 
         .tw-char.on { visibility: visible; }
 
+        /* the rotating lines share one spot, so the area is as tall as the longest line */
+        .tw-stack { display: grid; }
+        .tw-line { grid-area: 1 / 1; }
+
         .tw-char.cur::after {
             content: '';
             position: absolute;
@@ -1622,7 +1626,7 @@
             bottom: 8%;
             width: 3px;
             background: currentColor;
-            animation: tw-blink 0.8s steps(1) infinite;
+            animation: tw-blink 1.2s steps(1) infinite;
         }
 
         .tagline .tw-char.cur::after {
@@ -1860,7 +1864,7 @@
     <main id="home">
         <div class="hero-content">
             <div class="hero-accent"></div>
-            <h1>Yooo greetings from an Electrical &amp; Electronic Engineer</h1>
+            <h1>Welcome Aboard Captain, All Systems Online</h1>
             <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
         </div>
     </main>
@@ -2147,19 +2151,23 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
-        // Home text: typed from left to right (heading first, then the line below), after the loading screen
+        // Home text: the heading is typed left to right; the line below types, erases and cycles through three texts
         (function () {
             const h1 = document.querySelector('.hero-content h1');
             const tag = document.querySelector('.hero-content .tagline');
             if (!h1 || !tag) return;
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            function prepare(el) {
-                const text = el.textContent.trim();
-                const wrap = document.createElement('span');
+            const texts = [
+                tag.textContent.trim(),
+                'Powering ideas, one circuit at a time.',
+                'Mad scientist in training. Experiments in progress.'
+            ];
+
+            // turns a text into hidden letter spans (grouped by word so words never break in the middle)
+            function build(text) {
+                const frag = document.createElement('span');
                 const chars = [];
-                el.setAttribute('aria-label', text);
-                wrap.setAttribute('aria-hidden', 'true');
                 text.split(' ').forEach((word, i, words) => {
                     const w = document.createElement('span');
                     w.className = 'tw-word';
@@ -2170,16 +2178,30 @@
                         w.appendChild(c);
                         chars.push(c);
                     }
-                    wrap.appendChild(w);
-                    if (i < words.length - 1) wrap.appendChild(document.createTextNode(' '));
+                    frag.appendChild(w);
+                    if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
                 });
-                el.textContent = '';
-                el.appendChild(wrap);
-                return chars;
+                return { frag, chars };
             }
 
-            const headChars = prepare(h1);
-            const tagChars = prepare(tag);
+            const head = build(h1.textContent.trim());
+            h1.setAttribute('aria-label', h1.textContent.trim());
+            h1.textContent = '';
+            head.frag.setAttribute('aria-hidden', 'true');
+            h1.appendChild(head.frag);
+
+            const stack = document.createElement('span');
+            stack.className = 'tw-stack';
+            stack.setAttribute('aria-hidden', 'true');
+            tag.setAttribute('aria-label', texts[0]);
+            tag.textContent = '';
+            const lines = texts.map(t => {
+                const line = build(t);
+                line.frag.className = 'tw-line';
+                stack.appendChild(line.frag);
+                return line.chars;
+            });
+            tag.appendChild(stack);
 
             function type(chars, delay, done) {
                 let i = 0, prev = null;
@@ -2191,13 +2213,29 @@
                 }, delay);
             }
 
+            function erase(chars, delay, done) {
+                let i = chars.length;
+                const timer = setInterval(() => {
+                    if (i <= 0) { clearInterval(timer); done(); return; }
+                    i--;
+                    chars[i].classList.remove('on', 'cur');
+                    if (i > 0) chars[i - 1].classList.add('cur');
+                }, delay);
+            }
+
+            function cycle(n) {
+                const chars = lines[n];
+                type(chars, 32, last => {
+                    if (last) last.classList.add('cur');
+                    setTimeout(() => erase(chars, 18, () => setTimeout(() => cycle((n + 1) % lines.length), 350)), 5270);
+                });
+            }
+
             function start() {
-                if (reduce) { headChars.concat(tagChars).forEach(c => c.classList.add('on')); return; }
-                type(headChars, 45, last => {
+                if (reduce) { head.chars.concat(lines[0]).forEach(c => c.classList.add('on')); return; }
+                type(head.chars, 45, last => {
                     if (last) last.classList.remove('cur');
-                    setTimeout(() => type(tagChars, 32, lastTag => {
-                        if (lastTag) { lastTag.classList.add('cur'); setTimeout(() => lastTag.classList.remove('cur'), 2500); }
-                    }), 250);
+                    setTimeout(() => cycle(0), 250);
                 });
             }
 
