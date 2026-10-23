@@ -1589,7 +1589,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; }
+            #home { padding-top: 90px; padding-bottom: 88px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1597,7 +1597,7 @@
             #home {
                 min-height: auto;
                 padding-top: 115px;
-                padding-bottom: 110px;
+                padding-bottom: 150px;
             }
         }
 
@@ -1945,7 +1945,7 @@
     <main id="home">
         <div class="hero-content">
             <div class="hero-accent"></div>
-            <h1>Welcome Aboard Captain, All Systems Online</h1>
+            <h1>Welcome Aboard Captain,<br>All Systems Online</h1>
             <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
         </div>
         <div class="orbit" aria-hidden="true">
@@ -2266,24 +2266,32 @@
             function build(text) {
                 const frag = document.createElement('span');
                 const chars = [];
-                text.split(' ').forEach((word, i, words) => {
-                    const w = document.createElement('span');
-                    w.className = 'tw-word';
-                    for (const ch of word) {
-                        const c = document.createElement('span');
-                        c.className = 'tw-char';
-                        c.textContent = ch;
-                        w.appendChild(c);
-                        chars.push(c);
-                    }
-                    frag.appendChild(w);
-                    if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
+                text.split('\n').forEach((lineText, li) => {
+                    if (li > 0) frag.appendChild(document.createElement('br'));   // forced line break
+                    lineText.split(' ').forEach((word, i, words) => {
+                        const w = document.createElement('span');
+                        w.className = 'tw-word';
+                        for (const ch of word) {
+                            const c = document.createElement('span');
+                            c.className = 'tw-char';
+                            c.textContent = ch;
+                            w.appendChild(c);
+                            chars.push(c);
+                        }
+                        frag.appendChild(w);
+                        if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
+                    });
                 });
                 return { frag, chars };
             }
 
-            const head = build(h1.textContent.trim());
-            h1.setAttribute('aria-label', h1.textContent.trim());
+            // heading text, with <br> read as a line break
+            let headText = '';
+            h1.childNodes.forEach(n => { headText += n.nodeName === 'BR' ? '\n' : n.textContent; });
+            headText = headText.trim();
+
+            const head = build(headText);
+            h1.setAttribute('aria-label', headText.replace(/\n/g, ' '));
             h1.textContent = '';
             head.frag.setAttribute('aria-hidden', 'true');
             h1.appendChild(head.frag);
@@ -2377,7 +2385,8 @@
                 const nav = document.querySelector('nav');
                 const homeTop = hr.top + window.scrollY;
                 const minY = Math.max(0, (nav ? nav.offsetHeight : 0) - homeTop) + 44;
-                const maxY = hr.height - 44;
+                const drop = small ? 28 : 40;                       // the whole orbit sits this much lower (the section has the same extra room)
+                const maxY = hr.height - 44 - drop;
                 const sinT = Math.abs(Math.sin(theta)), cosT = Math.cos(theta);
                 let ext = Math.hypot(a * sinT, b * cosT);          // half of the orbit's visible height
                 const room = (maxY - minY) / 2;
@@ -2388,7 +2397,7 @@
                     else { const k = room / ext; a *= k; b *= k; }
                     ext = Math.hypot(a * sinT, b * cosT);
                 }
-                cy = Math.min(Math.max(cy, minY + ext), maxY - ext);
+                cy = Math.min(Math.max(cy, minY + ext), maxY - ext) + drop;
             }
 
             measure();
