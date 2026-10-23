@@ -1587,11 +1587,11 @@
             }
         }
 
-        /* Desktop only: bring the home content closer to the navbar (85px gap below the navbar) */
+        /* Desktop only: bring the home content closer to the navbar (100px gap below the navbar) */
         @media (min-width: 769px) {
             #home {
                 min-height: auto;
-                padding-top: 85px;
+                padding-top: 100px;
                 padding-bottom: 80px;
             }
         }
@@ -1727,6 +1727,82 @@
         @media (prefers-reduced-motion: reduce) {
             .loader-spinner::after { animation-duration: 2.5s; }
             .loader-fall { display: none; }
+        }
+
+        /* CubeSat orbiting the home text */
+        .orbit {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .cubesat {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .cs-scene { perspective: 260px; }
+
+        .cs-body {
+            position: relative;
+            width: 0;
+            height: 0;
+            transform-style: preserve-3d;
+            animation: cs-spin 8s linear infinite;
+        }
+
+        .cs-face {
+            position: absolute;
+            left: -10px;
+            top: -10px;
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            border: 1px solid #2d2d2d;
+            backface-visibility: hidden;
+        }
+
+        .cs-front { transform: translateZ(10px); background: linear-gradient(135deg, #f5f1ea, #d9cfbc); }
+        .cs-back { transform: rotateY(180deg) translateZ(10px); background: #a89c88; }
+        .cs-right { transform: rotateY(90deg) translateZ(10px); background: #cbbfa9; }
+        .cs-left { transform: rotateY(-90deg) translateZ(10px); background: #b5a890; }
+        .cs-top { transform: rotateX(90deg) translateZ(10px); background: #ffffff; }
+        .cs-bottom { transform: rotateX(-90deg) translateZ(10px); background: #8b7d6b; }
+
+        /* solar panels */
+        .cs-panel {
+            position: absolute;
+            top: -8px;
+            width: 34px;
+            height: 16px;
+            box-sizing: border-box;
+            border: 1px solid #1a1a1a;
+            background:
+                linear-gradient(0deg, transparent 0 6px, rgba(120, 116, 74, 0.9) 6px 7px, transparent 7px),
+                repeating-linear-gradient(90deg, #2d2d2d 0 8px, #78744a 8px 9px);
+        }
+
+        .cs-pr { left: 12px; }
+        .cs-pl { left: -46px; }
+
+        .cs-ant {
+            position: absolute;
+            left: -1px;
+            top: -24px;
+            width: 2px;
+            height: 14px;
+            background: #2d2d2d;
+        }
+
+        @keyframes cs-spin {
+            from { transform: rotateX(-22deg) rotateY(0deg); }
+            to { transform: rotateX(-22deg) rotateY(360deg); }
         }
 
         /* Retro pixel cursors (desktop) */
@@ -1866,6 +1942,23 @@
             <div class="hero-accent"></div>
             <h1>Welcome Aboard Captain, All Systems Online</h1>
             <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
+        </div>
+        <div class="orbit" aria-hidden="true">
+            <div class="cubesat">
+                <div class="cs-scene">
+                    <div class="cs-body">
+                        <div class="cs-face cs-front"></div>
+                        <div class="cs-face cs-back"></div>
+                        <div class="cs-face cs-right"></div>
+                        <div class="cs-face cs-left"></div>
+                        <div class="cs-face cs-top"></div>
+                        <div class="cs-face cs-bottom"></div>
+                        <div class="cs-panel cs-pr"></div>
+                        <div class="cs-panel cs-pl"></div>
+                        <div class="cs-ant"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -2235,6 +2328,7 @@
                 if (reduce) { head.chars.concat(lines[0]).forEach(c => c.classList.add('on')); return; }
                 type(head.chars, 45, last => {
                     if (last) last.classList.remove('cur');
+                    document.dispatchEvent(new Event('hero-heading-done'));
                     setTimeout(() => cycle(0), 250);
                 });
             }
@@ -2242,6 +2336,63 @@
             const loaderEl = document.getElementById('loader');
             if (!loaderEl || loaderEl.classList.contains('hide')) start();
             else document.addEventListener('loader-hidden', () => setTimeout(start, 300), { once: true });
+        })();
+
+        // CubeSat: elongated tilted orbit around the home text, starts after the heading is typed
+        (function () {
+            const home = document.getElementById('home');
+            const orbit = home && home.querySelector('.orbit');
+            if (!orbit) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { orbit.remove(); return; }
+
+            const sat = orbit.querySelector('.cubesat');
+            const PERIOD = 15;          // seconds for one full lap
+            const theta = -0.3;         // tilt: long axis runs from bottom-left to top-right
+            let cx = 0, cy = 0, a = 300, b = 140, base = 1;
+
+            function measure() {
+                const hr = home.getBoundingClientRect();
+                const parts = home.querySelectorAll('.hero-content h1 .tw-char, .hero-content .tagline .tw-char, .hero-accent');
+                let L = Infinity, R = -Infinity, T = Infinity, B = -Infinity;
+                parts.forEach(el => {
+                    const r = el.getBoundingClientRect();
+                    if (!r.width && !r.height) return;
+                    L = Math.min(L, r.left); R = Math.max(R, r.right);
+                    T = Math.min(T, r.top); B = Math.max(B, r.bottom);
+                });
+                if (!isFinite(L)) return;
+                const small = hr.width < 600;
+                base = small ? 0.75 : 1;
+                cx = (L + R) / 2 - hr.left;
+                cy = (T + B) / 2 - hr.top;
+                a = Math.min((R - L) / 2 * 1.2 + (small ? 40 : 80), hr.width / 2 - (small ? 56 : 30));
+                b = Math.min((B - T) / 2 + (small ? 50 : 85), hr.height / 2 - 30);
+            }
+
+            measure();
+            window.addEventListener('resize', measure);
+
+            let s = 0, last = 0, fade = 0;
+            function frame(t) {
+                if (!last) last = t;
+                const dt = Math.min(0.05, (t - last) / 1000);
+                last = t;
+                // slower at the two ends of the orbit, faster across the middle
+                s += dt * (2 * Math.PI / PERIOD) * (0.65 + 0.7 * Math.sin(s) * Math.sin(s));
+                const xl = a * Math.cos(s), yl = b * Math.sin(s);
+                const c = Math.cos(theta), sn = Math.sin(theta);
+                const x = cx + xl * c - yl * sn;
+                const y = cy + xl * sn + yl * c;
+                const depth = Math.sin(s);                 // +1 near the viewer, -1 far side
+                fade = Math.min(1, fade + dt / 0.8);
+                sat.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (base * (1 + 0.45 * depth)).toFixed(3) + ')';
+                sat.style.opacity = (fade * (0.8 + 0.2 * (depth + 1) / 2)).toFixed(3);
+                sat.style.filter = 'brightness(' + (0.78 + 0.22 * (depth + 1) / 2).toFixed(3) + ')';
+                orbit.style.zIndex = depth > 0 ? 3 : 1;    // in front of the text on the near side, behind it on the far side
+                requestAnimationFrame(frame);
+            }
+
+            document.addEventListener('hero-heading-done', () => { measure(); requestAnimationFrame(frame); }, { once: true });
         })();
 
         // Logo, menu and footer links: smooth scroll without adding "#" or history entries
