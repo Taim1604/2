@@ -1587,12 +1587,17 @@
             }
         }
 
-        /* Desktop only: bring the home content closer to the navbar (100px gap below the navbar) */
+        /* Gap between the navbar and the home content */
+        @media (max-width: 768px) {
+            #home { padding-top: 90px; }
+        }
+
+        /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
         @media (min-width: 769px) {
             #home {
                 min-height: auto;
-                padding-top: 100px;
-                padding-bottom: 80px;
+                padding-top: 115px;
+                padding-bottom: 110px;
             }
         }
 
@@ -2366,7 +2371,24 @@
                 cx = (L + R) / 2 - hr.left;
                 cy = (T + B) / 2 - hr.top;
                 a = Math.min((R - L) / 2 * 1.2 + (small ? 40 : 80), hr.width / 2 - (small ? 56 : 30));
-                b = Math.min((B - T) / 2 + (small ? 50 : 85), hr.height / 2 - 30);
+                b = (B - T) / 2 + (small ? 50 : 85);
+
+                // keep the whole orbit below the navbar and inside the home section (nothing gets cut off)
+                const nav = document.querySelector('nav');
+                const homeTop = hr.top + window.scrollY;
+                const minY = Math.max(0, (nav ? nav.offsetHeight : 0) - homeTop) + 44;
+                const maxY = hr.height - 44;
+                const sinT = Math.abs(Math.sin(theta)), cosT = Math.cos(theta);
+                let ext = Math.hypot(a * sinT, b * cosT);          // half of the orbit's visible height
+                const room = (maxY - minY) / 2;
+                if (room > 0 && ext > room) {
+                    // first flatten the orbit a little (keeps its width); shrink everything only if that is not enough
+                    const bMax = Math.sqrt(Math.max(0, room * room - a * sinT * a * sinT)) / cosT;
+                    if (bMax >= (B - T) / 2 * 0.6) { b = bMax; }
+                    else { const k = room / ext; a *= k; b *= k; }
+                    ext = Math.hypot(a * sinT, b * cosT);
+                }
+                cy = Math.min(Math.max(cy, minY + ext), maxY - ext);
             }
 
             measure();
