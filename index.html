@@ -2361,7 +2361,7 @@
             const sat = orbit.querySelector('.cubesat');
             const PERIOD = 15;          // seconds for one full lap
             const theta = -0.3;         // tilt: long axis runs from bottom-left to top-right
-            let cx = 0, cy = 0, a = 300, b = 140, base = 1;
+            let cx = 0, cy = 0, a = 300, b = 140, base = 1, lean = 0, textRects = [];
 
             function measure() {
                 const hr = home.getBoundingClientRect();
@@ -2374,7 +2374,7 @@
                     T = Math.min(T, r.top); B = Math.max(B, r.bottom);
                 });
                 if (!isFinite(L)) return;
-                const small = hr.width < 600;
+                const small = hr.width <= 768;      // same breakpoint as the mobile layout
                 base = small ? 0.75 : 1;
                 cx = (L + R) / 2 - hr.left;
                 cy = (T + B) / 2 - hr.top;
@@ -2398,11 +2398,61 @@
                     ext = Math.hypot(a * sinT, b * cosT);
                 }
                 cy = Math.min(Math.max(cy, minY + ext), maxY - ext) + drop;
+
+                // text boxes (relative to the section), used to decide when the cubesat may switch between front and back
+                const rows = {};
+                home.querySelectorAll('.hero-content h1 .tw-char, .hero-content .tagline .tw-char').forEach(el => {
+                    const r = el.getBoundingClientRect();
+                    if (!r.width) return;
+                    const key = (el.closest('.tw-line') ? 't' : 'h') + Math.round(r.top / 8);
+                    const o = rows[key] || (rows[key] = { l: Infinity, r: -Infinity, t: Infinity, b: -Infinity });
+                    o.l = Math.min(o.l, r.left); o.r = Math.max(o.r, r.right);
+                    o.t = Math.min(o.t, r.top); o.b = Math.max(o.b, r.bottom);
+                });
+                const bar = home.querySelector('.hero-accent').getBoundingClientRect();
+                rows.bar = { l: bar.left, r: bar.right, t: bar.top, b: bar.bottom };
+                textRects = Object.values(rows).map(o => ({ l: o.l - hr.left - 6, r: o.r - hr.left + 6, t: o.t - hr.top - 4, b: o.b - hr.top + 4 }));
+
+                // lean the orbit upwards so the far-side pass goes above the red bar (the near-side pass then travels less far down)
+                const c = Math.cos(theta), sn = Math.sin(theta);
+                const barTopRel = bar.top - hr.top, barCx = (bar.left + bar.right) / 2 - hr.left;
+                const target = barTopRel - (small ? 44 : 34) - 8 * base;
+                const farPoint = (q, e) => {
+                    const xl = a * Math.cos(q), yl = b * Math.sin(q) - e * Math.sin(q) * Math.sin(q);
+                    return { x: cx + xl * c - yl * sn, y: cy + xl * sn + yl * c };
+                };
+                const yAtBar = e => {
+                    let best = Infinity, by = 0;
+                    for (let q = Math.PI; q <= 2 * Math.PI; q += 0.02) {
+                        const pt = farPoint(q, e), d = Math.abs(pt.x - barCx);
+                        if (d < best) { best = d; by = pt.y; }
+                    }
+                    return by;
+                };
+                const yTop = e => { let m = Infinity; for (let q = Math.PI; q <= 2 * Math.PI; q += 0.02) m = Math.min(m, farPoint(q, e).y); return m; };
+                lean = 0;
+                for (let i = 0; i < 8; i++) {
+                    const err = yAtBar(lean) - target;
+                    if (err <= 0.5) break;
+                    lean += err * 1.15;
+                }
+                lean = Math.min(lean, b * 0.9);
+                const navRel = (nav ? nav.offsetHeight : 0) - homeTop;       // bottom of the navbar, relative to the section
+                const topLimit = navRel + 12 + 14 * base;
+                if (yTop(lean) < topLimit) lean = Math.max(0, lean - (topLimit - yTop(lean)) / 0.95);
             }
 
             measure();
             window.addEventListener('resize', measure);
 
+            // true when the cubesat would visibly touch the text
+            function overlapsText(x, y, sc) {
+                const l = x - 30 * sc, r = x + 30 * sc, t = y - 24 * sc, bt = y + 10 * sc;
+                return textRects.some(q => !(r < q.l || l > q.r || bt < q.t || t > q.b));
+            }
+
+            const LEAD = 0.55;          // the front/back switch is prepared a bit before the ends of the orbit, away from the text
+            let front = Math.sin(LEAD) > 0, waited = 0;
             let s = 0, last = 0, fade = 0;
             function frame(t) {
                 if (!last) last = t;
@@ -2410,16 +2460,25 @@
                 last = t;
                 // slower at the two ends of the orbit, faster across the middle
                 s += dt * (2 * Math.PI / PERIOD) * (0.65 + 0.7 * Math.sin(s) * Math.sin(s));
-                const xl = a * Math.cos(s), yl = b * Math.sin(s);
+                const sinS = Math.sin(s);
+                const xl = a * Math.cos(s), yl = b * sinS - lean * sinS * sinS;
                 const c = Math.cos(theta), sn = Math.sin(theta);
                 const x = cx + xl * c - yl * sn;
                 const y = cy + xl * sn + yl * c;
                 const depth = Math.sin(s);                 // +1 near the viewer, -1 far side
                 fade = Math.min(1, fade + dt / 0.8);
-                sat.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + (base * (1 + 0.45 * depth)).toFixed(3) + ')';
+                const sc = base * (1 + 0.45 * depth);
+                sat.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + sc.toFixed(3) + ')';
                 sat.style.opacity = (fade * (0.8 + 0.2 * (depth + 1) / 2)).toFixed(3);
                 sat.style.filter = 'brightness(' + (0.78 + 0.22 * (depth + 1) / 2).toFixed(3) + ')';
-                orbit.style.zIndex = depth > 0 ? 3 : 1;    // in front of the text on the near side, behind it on the far side
+                // in front of the text on the near side, behind it on the far side; it only switches while clear of the text
+                const wantFront = Math.sin(s + LEAD) > 0;
+                if (wantFront !== front) {
+                    if (!overlapsText(x, y, sc) || ++waited > 120) { front = wantFront; waited = 0; }
+                } else {
+                    waited = 0;
+                }
+                orbit.style.zIndex = front ? 3 : 1;
                 requestAnimationFrame(frame);
             }
 
