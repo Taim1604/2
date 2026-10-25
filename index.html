@@ -1805,6 +1805,26 @@
             background: #2d2d2d;
         }
 
+        /* blinking light on the tip of the antenna (two crossed discs, so it shows from every angle) */
+        .cs-light {
+            position: absolute;
+            left: -2.5px;
+            top: -27.5px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff8a8a 0, #d32f2f 65%);
+            box-shadow: 0 0 6px 2px rgba(211, 47, 47, 0.7);
+            animation: cs-blink 1.2s ease-in-out infinite;
+        }
+
+        .cs-light2 { transform: rotateY(90deg); }
+
+        @keyframes cs-blink {
+            0%, 55%, 100% { opacity: 0.12; }
+            10%, 40% { opacity: 1; }
+        }
+
         @keyframes cs-spin {
             from { transform: rotateX(-22deg) rotateY(0deg); }
             to { transform: rotateX(-22deg) rotateY(360deg); }
@@ -1961,6 +1981,8 @@
                         <div class="cs-panel cs-pr"></div>
                         <div class="cs-panel cs-pl"></div>
                         <div class="cs-ant"></div>
+                        <div class="cs-light"></div>
+                        <div class="cs-light cs-light2"></div>
                     </div>
                 </div>
             </div>
