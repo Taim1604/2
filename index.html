@@ -1589,7 +1589,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; padding-bottom: 88px; }
+            #home { padding-top: 90px; padding-bottom: 110px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -2443,7 +2443,7 @@
 
                 // phones/tablets only: the near-side (lower) pass travels a bit further down, and the cubesat
                 // first appears on the far-side pass above the heading instead of beside the text
-                leanDown = small ? lean - 22 : lean;
+                leanDown = small ? lean - 42 : lean;
                 startS = 0;
                 if (small) {
                     let headTop = Infinity;
@@ -2452,7 +2452,7 @@
                         const sq = Math.sin(q);
                         const xl = a * Math.cos(q), yl = b * sq - lean * sq * sq;
                         const py = cy + xl * sn + yl * c;
-                        if (py + 10 * base * (1 + 0.45 * sq) <= headTop - 6) { startS = q - 2 * Math.PI - 0.6; break; }   // start a little further back, clearly above the heading
+                        if (py + 10 * base * (1 + 0.45 * sq) <= headTop - 6) { startS = q - 2 * Math.PI - 0.12; break; }   // start just above the heading
                     }
                 }
             }
