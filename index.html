@@ -2361,7 +2361,7 @@
             const sat = orbit.querySelector('.cubesat');
             const PERIOD = 15;          // seconds for one full lap
             const theta = -0.3;         // tilt: long axis runs from bottom-left to top-right
-            let cx = 0, cy = 0, a = 300, b = 140, base = 1, lean = 0, textRects = [];
+            let cx = 0, cy = 0, a = 300, b = 140, base = 1, lean = 0, leanDown = 0, startS = 0, textRects = [];
 
             function measure() {
                 const hr = home.getBoundingClientRect();
@@ -2440,6 +2440,21 @@
                 const navRel = (nav ? nav.offsetHeight : 0) - homeTop;       // bottom of the navbar, relative to the section
                 const topLimit = navRel + 12 + 14 * base;
                 if (yTop(lean) < topLimit) lean = Math.max(0, lean - (topLimit - yTop(lean)) / 0.95);
+
+                // phones/tablets only: the near-side (lower) pass travels a bit further down, and the cubesat
+                // first appears on the far-side pass above the heading instead of beside the text
+                leanDown = small ? lean - 22 : lean;
+                startS = 0;
+                if (small) {
+                    let headTop = Infinity;
+                    Object.keys(rows).forEach(k => { if (k[0] === 'h') headTop = Math.min(headTop, rows[k].t - hr.top); });
+                    for (let q = 2 * Math.PI; q > Math.PI; q -= 0.02) {
+                        const sq = Math.sin(q);
+                        const xl = a * Math.cos(q), yl = b * sq - lean * sq * sq;
+                        const py = cy + xl * sn + yl * c;
+                        if (py + 10 * base * (1 + 0.45 * sq) <= headTop - 6) { startS = q - 2 * Math.PI - 0.6; break; }   // start a little further back, clearly above the heading
+                    }
+                }
             }
 
             measure();
@@ -2461,7 +2476,7 @@
                 // slower at the two ends of the orbit, faster across the middle
                 s += dt * (2 * Math.PI / PERIOD) * (0.65 + 0.7 * Math.sin(s) * Math.sin(s));
                 const sinS = Math.sin(s);
-                const xl = a * Math.cos(s), yl = b * sinS - lean * sinS * sinS;
+                const xl = a * Math.cos(s), yl = b * sinS - (sinS < 0 ? lean : leanDown) * sinS * sinS;
                 const c = Math.cos(theta), sn = Math.sin(theta);
                 const x = cx + xl * c - yl * sn;
                 const y = cy + xl * sn + yl * c;
@@ -2482,7 +2497,12 @@
                 requestAnimationFrame(frame);
             }
 
-            document.addEventListener('hero-heading-done', () => { measure(); requestAnimationFrame(frame); }, { once: true });
+            document.addEventListener('hero-heading-done', () => {
+                measure();
+                s = startS;
+                front = Math.sin(s + LEAD) > 0;
+                requestAnimationFrame(frame);
+            }, { once: true });
         })();
 
         // Logo, menu and footer links: smooth scroll without adding "#" or history entries
