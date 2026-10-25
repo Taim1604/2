@@ -2361,7 +2361,7 @@
             const sat = orbit.querySelector('.cubesat');
             const PERIOD = 15;          // seconds for one full lap
             const theta = -0.3;         // tilt: long axis runs from bottom-left to top-right
-            let cx = 0, cy = 0, a = 300, b = 140, base = 1, lean = 0, leanDown = 0, startS = 0, textRects = [];
+            let cx = 0, cy = 0, a = 300, b = 140, base = 1, lean = 0, leanUp = 0, leanDown = 0, startS = 0, textRects = [];
 
             function measure() {
                 const hr = home.getBoundingClientRect();
@@ -2443,6 +2443,7 @@
 
                 // phones/tablets only: the near-side (lower) pass travels a bit further down, and the cubesat
                 // first appears on the far-side pass above the heading instead of beside the text
+                leanUp = small ? lean - 1 : lean;                 // phones: the upper pass travels 1px less far up
                 leanDown = small ? lean - 40.33 : lean;
                 startS = 0;
                 if (small) {
@@ -2476,7 +2477,7 @@
                 // slower at the two ends of the orbit, faster across the middle
                 s += dt * (2 * Math.PI / PERIOD) * (0.65 + 0.7 * Math.sin(s) * Math.sin(s));
                 const sinS = Math.sin(s);
-                const xl = a * Math.cos(s), yl = b * sinS - (sinS < 0 ? lean : leanDown) * sinS * sinS;
+                const xl = a * Math.cos(s), yl = b * sinS - (sinS < 0 ? leanUp : leanDown) * sinS * sinS;
                 const c = Math.cos(theta), sn = Math.sin(theta);
                 const x = cx + xl * c - yl * sn;
                 const y = cy + xl * sn + yl * c;
