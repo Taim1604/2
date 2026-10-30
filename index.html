@@ -1589,7 +1589,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; padding-bottom: 110px; }
+            #home { padding-top: 90px; padding-bottom: 170px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1597,7 +1597,7 @@
             #home {
                 min-height: auto;
                 padding-top: 115px;
-                padding-bottom: 150px;
+                padding-bottom: 220px;
             }
         }
 
@@ -1732,6 +1732,21 @@
         @media (prefers-reduced-motion: reduce) {
             .loader-spinner::after { animation-duration: 2.5s; }
             .loader-fall { display: none; }
+        }
+
+        /* Signal waveform below the cubesat's orbit */
+        .home-wave {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .home-wave { height: 60px; }
         }
 
         /* CubeSat orbiting the home text */
@@ -1968,6 +1983,7 @@
             <h1>Welcome Aboard Captain,<br>All Systems Online</h1>
             <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
         </div>
+        <canvas class="home-wave" aria-hidden="true"></canvas>
         <div class="orbit" aria-hidden="true">
             <div class="cubesat">
                 <div class="cs-scene">
@@ -2408,7 +2424,8 @@
                 const homeTop = hr.top + window.scrollY;
                 const minY = Math.max(0, (nav ? nav.offsetHeight : 0) - homeTop) + 44;
                 const drop = small ? 28 : 40;                       // the whole orbit sits this much lower (the section has the same extra room)
-                const maxY = hr.height - 44 - drop;
+                const waveEl = home.querySelector('.home-wave');
+                const maxY = hr.height - 44 - drop - (waveEl ? waveEl.offsetHeight : 0);
                 const sinT = Math.abs(Math.sin(theta)), cosT = Math.cos(theta);
                 let ext = Math.hypot(a * sinT, b * cosT);          // half of the orbit's visible height
                 const room = (maxY - minY) / 2;
@@ -2538,6 +2555,86 @@
                 else target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
+
+        // Signal waveform at the bottom of the home section: a pulse travels along it, scrolling tunes the frequency
+        (function () {
+            const home = document.getElementById('home');
+            const canvas = home && home.querySelector('.home-wave');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let w = 0, h = 0, visible = true, t = 0, px = -200, vel = 0, lastY = window.scrollY, prev = performance.now();
+            const SIGMA = 70;
+
+            function resize() {
+                const dpr = window.devicePixelRatio || 1;
+                w = canvas.clientWidth; h = canvas.clientHeight;
+                canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                if (reduce) { px = w * 0.5; draw(); }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                const sy = window.scrollY;
+                const f = Math.min(1, sy / Math.max(300, home.offsetHeight * 0.8));
+                const k = 0.018 + 0.05 * f;                       // scrolling tunes the frequency
+                const phase = sy * 0.012;
+                const mid = h / 2, A = h * 0.2;
+                const amp = x => 1 + 0.8 * Math.exp(-Math.pow((x - px) / SIGMA, 2));   // the line swells where the pulse is
+                const yAt = x => mid + A * (Math.sin(x * k + t * 2 + phase) + 0.35 * Math.sin(x * k * 2.3 + t * 3)) * amp(x);
+
+                ctx.strokeStyle = 'rgba(139, 125, 107, 0.25)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 6]);
+                ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(w, mid); ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.beginPath();
+                for (let x = 0; x <= w; x += 3) x ? ctx.lineTo(x, yAt(x)) : ctx.moveTo(x, yAt(x));
+                ctx.strokeStyle = 'rgba(45, 45, 45, 0.9)';
+                ctx.lineWidth = 1.6;
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+
+                // glowing pulse running along the line
+                ctx.save();
+                ctx.shadowColor = 'rgba(120, 116, 74, 0.9)';
+                ctx.shadowBlur = 12;
+                ctx.lineWidth = 2.6;
+                ctx.lineCap = 'round';
+                for (let x = Math.max(0, px - 3 * SIGMA); x < Math.min(w, px + 3 * SIGMA); x += 3) {
+                    const g = Math.exp(-Math.pow((x + 1.5 - px) / SIGMA, 2));
+                    ctx.strokeStyle = 'rgba(120, 116, 74, ' + (0.12 + 0.88 * g).toFixed(3) + ')';
+                    ctx.beginPath(); ctx.moveTo(x, yAt(x)); ctx.lineTo(x + 3, yAt(x + 3)); ctx.stroke();
+                }
+                ctx.restore();
+
+                ctx.fillStyle = 'rgba(122, 80, 48, 0.9)';
+                ctx.font = '600 11px Segoe UI, sans-serif';
+                ctx.fillText('freq: ' + (k * 100).toFixed(1) + ' kHz', 14, h - 6);
+            }
+
+            new ResizeObserver(resize).observe(canvas);
+            new IntersectionObserver(e => { visible = e[0].isIntersecting; }).observe(canvas);
+            if (reduce) return;
+
+            function loop(now) {
+                const dt = Math.min(0.05, (now - prev) / 1000);
+                prev = now;
+                const sy = window.scrollY;
+                vel = vel * 0.9 + Math.abs(sy - lastY) * 0.1;
+                lastY = sy;
+                if (visible && !document.hidden && w) {
+                    t += dt;
+                    px += (220 + Math.min(vel, 50) * 25) * dt;
+                    if (px > w + 3 * SIGMA) px = -3 * SIGMA;
+                    draw();
+                }
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        })();
 
         // Block right-click / long-press on every image (works for any image added later too)
         document.addEventListener('contextmenu', e => {
