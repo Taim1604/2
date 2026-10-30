@@ -261,6 +261,7 @@
         }
 
         .hero-content .tagline {
+            padding-top: 1.67px;
             font-size: 1.3rem;
             color: var(--dark-accent);
             font-weight: 300;
@@ -1589,7 +1590,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; padding-bottom: 200px; }
+            #home { padding-top: 90px; padding-bottom: 230px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1746,7 +1747,7 @@
         }
 
         @media (max-width: 768px) {
-            .home-wave { height: 90px; }
+            .home-wave { height: 120px; }
         }
 
         /* CubeSat orbiting the home text */
@@ -2287,18 +2288,22 @@
 
         sections.forEach(section => sectionObserver.observe(section));
 
-        // Home text: the heading is typed left to right; the line below types, erases and cycles through three texts
+        // Home text: the heading is typed left to right; the line below types, erases and cycles through its texts
         (function () {
             const h1 = document.querySelector('.hero-content h1');
             const tag = document.querySelector('.hero-content .tagline');
             if (!h1 || !tag) return;
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            const texts = [
-                tag.textContent.trim(),
+            // ---- Bottom texts ----------------------------------------------------------
+            // The first sentence (the one written in the HTML) always types first.
+            // To add a new sentence, just add it to MORE_TEXTS: it joins the random order automatically.
+            const FIRST_TEXT = tag.textContent.trim();
+            const MORE_TEXTS = [
                 'Powering ideas, one circuit at a time.',
                 'Mad scientist in training. Experiments in progress.'
             ];
+            const texts = [FIRST_TEXT].concat(MORE_TEXTS);
 
             // turns a text into hidden letter spans (grouped by word so words never break in the middle)
             function build(text) {
@@ -2367,11 +2372,31 @@
                 }, delay);
             }
 
+            // random order: after the first text every other sentence plays once (shuffled),
+            // then all sentences are reshuffled; the same sentence never plays twice in a row
+            function shuffle(list) {
+                for (let i = list.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [list[i], list[j]] = [list[j], list[i]];
+                }
+                return list;
+            }
+            let queue = shuffle(texts.map((_, i) => i).slice(1));
+            let lastShown = 0;
+            function nextIndex() {
+                if (!queue.length) {
+                    queue = shuffle(texts.map((_, i) => i));
+                    if (queue.length > 1 && queue[0] === lastShown) queue.push(queue.shift());
+                }
+                lastShown = queue.shift();
+                return lastShown;
+            }
+
             function cycle(n) {
                 const chars = lines[n];
                 type(chars, 32, last => {
                     if (last) last.classList.add('cur');
-                    setTimeout(() => erase(chars, 18, () => setTimeout(() => cycle((n + 1) % lines.length), 350)), 5270);
+                    setTimeout(() => erase(chars, 18, () => setTimeout(() => cycle(nextIndex()), 350)), 5270);
                 });
             }
 
@@ -2564,7 +2589,7 @@
             const ctx = canvas.getContext('2d');
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             let w = 0, h = 0, visible = true, t = 0, px = -200, vel = 0, lastY = window.scrollY, prev = performance.now();
-            const SIGMA = 70;
+            const SIGMA = 45;
 
             function resize() {
                 const dpr = window.devicePixelRatio || 1;
