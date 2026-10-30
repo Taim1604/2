@@ -1589,7 +1589,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; padding-bottom: 170px; }
+            #home { padding-top: 90px; padding-bottom: 200px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1746,7 +1746,7 @@
         }
 
         @media (max-width: 768px) {
-            .home-wave { height: 60px; }
+            .home-wave { height: 90px; }
         }
 
         /* CubeSat orbiting the home text */
@@ -2580,7 +2580,8 @@
                 const f = Math.min(1, sy / Math.max(300, home.offsetHeight * 0.8));
                 const k = 0.018 + 0.05 * f;                       // scrolling tunes the frequency
                 const phase = sy * 0.012;
-                const mid = h / 2, A = h * 0.2;
+                const lineH = Math.min(h, window.innerWidth <= 768 ? 60 : 70);    // height used by the line itself
+                const mid = h - lineH / 2, A = lineH * 0.2;
                 const amp = x => 1 + 0.8 * Math.exp(-Math.pow((x - px) / SIGMA, 2));   // the line swells where the pulse is
                 const yAt = x => mid + A * (Math.sin(x * k + t * 2 + phase) + 0.35 * Math.sin(x * k * 2.3 + t * 3)) * amp(x);
 
@@ -2599,20 +2600,17 @@
 
                 // glowing pulse running along the line
                 ctx.save();
-                ctx.shadowColor = 'rgba(120, 116, 74, 0.9)';
+                ctx.shadowColor = 'rgba(211, 47, 47, 0.85)';
                 ctx.shadowBlur = 12;
                 ctx.lineWidth = 2.6;
                 ctx.lineCap = 'round';
                 for (let x = Math.max(0, px - 3 * SIGMA); x < Math.min(w, px + 3 * SIGMA); x += 3) {
                     const g = Math.exp(-Math.pow((x + 1.5 - px) / SIGMA, 2));
-                    ctx.strokeStyle = 'rgba(120, 116, 74, ' + (0.12 + 0.88 * g).toFixed(3) + ')';
+                    ctx.strokeStyle = 'rgba(211, 47, 47, ' + (0.12 + 0.88 * g).toFixed(3) + ')';
                     ctx.beginPath(); ctx.moveTo(x, yAt(x)); ctx.lineTo(x + 3, yAt(x + 3)); ctx.stroke();
                 }
                 ctx.restore();
 
-                ctx.fillStyle = 'rgba(122, 80, 48, 0.9)';
-                ctx.font = '600 11px Segoe UI, sans-serif';
-                ctx.fillText('freq: ' + (k * 100).toFixed(1) + ' kHz', 14, h - 6);
             }
 
             new ResizeObserver(resize).observe(canvas);
