@@ -1590,7 +1590,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 90px; padding-bottom: 230px; }
+            #home { padding-top: 110px; padding-bottom: 230px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -2589,11 +2589,12 @@
             const ctx = canvas.getContext('2d');
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             let w = 0, h = 0, visible = true, t = 0, px = -200, vel = 0, lastY = window.scrollY, prev = performance.now();
-            const SIGMA = 45;
+            let SIGMA = 45;                                   // pulse length: shorter on phones
 
             function resize() {
                 const dpr = window.devicePixelRatio || 1;
                 w = canvas.clientWidth; h = canvas.clientHeight;
+                SIGMA = window.innerWidth <= 768 ? 30 : 45;
                 canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
                 ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                 if (reduce) { px = w * 0.5; draw(); }
