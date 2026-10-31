@@ -567,6 +567,158 @@
             .activity-text { font-size: 0.956rem; }
         }
 
+        /* About Me */
+        #about .section-content {
+            width: 100%;
+            min-width: 0;
+            max-width: 860px;
+        }
+
+        .about-card {
+            max-width: 720px;
+            margin: 32px auto 0;
+            padding: 34px 38px 36px;
+            background: var(--cream-bg);
+            border: 2px solid var(--dark-text);
+            border-radius: 14px;
+            box-shadow: 5px 5px 0 var(--dark-text);
+        }
+
+        .about-photo {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 220px;
+            aspect-ratio: 3 / 4;
+            margin: 0 auto;
+            overflow: hidden;
+            background: var(--ash-brown);
+            color: var(--cream-bg);
+            border: 2px solid var(--dark-text);
+            border-radius: 10px;
+        }
+
+        .about-photo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .about-photo span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .about-photo img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-text {
+            margin: 28px auto 0;
+            text-align: center;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--dark-accent);
+        }
+
+        .about-text p + p { margin-top: 14px; }
+
+        .skills { margin-top: 60px; }
+
+        .skills-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+
+        .skill-group { margin-top: 30px; }
+
+        .skill-group-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #7a5030;
+        }
+
+        .skill-group-title::before {
+            content: '';
+            width: 22px;
+            height: 3px;
+            background: var(--red-accent);
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin-top: 16px;
+        }
+
+        .skill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 9px;
+            width: 112px;
+            padding: 14px 8px 12px;
+            background: var(--cream-bg);
+            border: 2px solid var(--dark-text);
+            border-radius: 12px;
+            box-shadow: 3px 3px 0 var(--dark-text);
+        }
+
+        .skill img,
+        .skill-fallback {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .skill-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--ash-brown);
+            color: var(--cream-bg);
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .skill span {
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1.25;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .about-card { padding: 24px 18px 26px; }
+            .about-photo { width: 180px; }
+            .about-text p { font-size: 1rem; }
+            .skill-list { gap: 14px; }
+            .skill { width: 98px; padding: 12px 6px 10px; }
+            .skill img, .skill-fallback { width: 38px; height: 38px; }
+            .skill span { font-size: 0.82rem; }
+            #about { padding-top: 90px; }
+        }
+
         /* Research & Publications */
         #rnd .section-content {
             width: 100%;
@@ -781,7 +933,7 @@
         }
 
         /* Connect Section */
-        #contact h2, #rnd h2, #co h2 {
+        #contact h2, #rnd h2, #co h2, #about h2 {
             font-size: 2.8rem;
             font-weight: 900;
             letter-spacing: -1px;
@@ -843,6 +995,7 @@
 
         /* Desktop: constant gap (80px + 80px) between Research, Co-Activities, Contact and the footer */
         @media (min-width: 769px) {
+            #about,
             #rnd,
             #co,
             #contact {
@@ -851,18 +1004,21 @@
                 padding-bottom: 80px;
             }
 
+            /* the home wave's line sits 35px above the bottom of the home section, so 125 + 35 = the same 160px gap as the other sections */
+            #about { padding-top: 125px; }
+
             #contact + footer {
                 margin-top: 80px;
             }
         }
 
         @media (max-width: 768px) {
-            #contact h2, #rnd h2, #co h2 { font-size: 2.2rem; }
+            #contact h2, #rnd h2, #co h2, #about h2 { font-size: 2.2rem; }
             .connect-text { font-size: 1rem; }
         }
 
         @media (max-width: 480px) {
-            #contact h2, #rnd h2, #co h2 { font-size: 1.8rem; }
+            #contact h2, #rnd h2, #co h2, #about h2 { font-size: 1.8rem; }
             .connect-buttons { gap: 16px; }
             .connect-btn { padding: 10px 18px; font-size: 0.95rem; }
         }
@@ -2010,6 +2166,50 @@
     <section id="about">
         <div class="section-content">
             <h2>About Me</h2>
+
+            <div class="about-card">
+                <figure class="about-photo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    <span>Add photo</span>
+                    <img src="about.jpg" alt="Profile photo" draggable="false" loading="lazy" onerror="this.remove()">
+                </figure>
+
+                <div class="about-text">
+                    <p>Placeholder text for your introduction. Tell visitors who you are, what you study or do, and what drives you. As an Electrical &amp; Electronic Engineer, this is a good place to mention the areas you care about most, like circuits, embedded systems or power.</p>
+                    <p>Placeholder text for your second paragraph. Share a little about your background, what you are working on right now, or what you enjoy doing outside of work.</p>
+                </div>
+            </div>
+
+            <div class="skills">
+                <h3 class="skills-title">Skills</h3>
+                <div class="skill-group">
+                    <div class="skill-group-title">Programming</div>
+                    <div class="skill-list">
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Python</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C++</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>JavaScript</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>MATLAB</span></div>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-group-title">Electronics &amp; Hardware</div>
+                    <div class="skill-list">
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" alt="Arduino" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Arduino</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Raspberry Pi</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Linux</span></div>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-group-title">Tools &amp; Software</div>
+                    <div class="skill-list">
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>VS Code</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Git</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>GitHub</span></div>
+                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Figma</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
