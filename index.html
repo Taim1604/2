@@ -575,13 +575,12 @@
         }
 
         .about-card {
-            max-width: 720px;
+            max-width: 680px;
             margin: 32px auto 0;
-            padding: 34px 38px 36px;
+            overflow: hidden;
             background: var(--cream-bg);
             border: 2px solid var(--dark-text);
             border-radius: 14px;
-            box-shadow: 5px 5px 0 var(--dark-text);
         }
 
         .about-photo {
@@ -591,14 +590,13 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            width: 220px;
-            aspect-ratio: 3 / 4;
-            margin: 0 auto;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            margin: 0;
             overflow: hidden;
             background: var(--ash-brown);
             color: var(--cream-bg);
-            border: 2px solid var(--dark-text);
-            border-radius: 10px;
+            border-bottom: 2px solid var(--dark-text);
         }
 
         .about-photo svg {
@@ -622,7 +620,8 @@
         }
 
         .about-text {
-            margin: 28px auto 0;
+            margin: 0;
+            padding: 28px 36px 32px;
             text-align: center;
         }
 
@@ -708,15 +707,44 @@
             text-align: center;
         }
 
+        /* tech stack rows slide in from the right, in a loop */
+        .skill-list.is-marquee {
+            display: block;
+            overflow: hidden;
+            padding: 2px 0 7px;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        .skill-track {
+            display: flex;
+            width: max-content;
+            animation: skill-slide var(--dur, 20s) linear infinite;
+            will-change: transform;
+        }
+
+        .skill-track .skill {
+            flex: 0 0 auto;
+            margin-right: 18px;
+        }
+
+        @keyframes skill-slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-1 * var(--set-w, 600px))); }
+        }
+
+        @media (hover: hover) {
+            .skill-list.is-marquee:hover .skill-track { animation-play-state: paused; }
+        }
+
         @media (max-width: 768px) {
-            .about-card { padding: 24px 18px 26px; }
-            .about-photo { width: 180px; }
+            .about-text { padding: 22px 18px 26px; }
             .about-text p { font-size: 1rem; }
             .skill-list { gap: 14px; }
+            .skill-track .skill { margin-right: 14px; }
             .skill { width: 98px; padding: 12px 6px 10px; }
             .skill img, .skill-fallback { width: 38px; height: 38px; }
             .skill span { font-size: 0.82rem; }
-            #about { padding-top: 90px; }
         }
 
         /* Research & Publications */
@@ -1004,8 +1032,6 @@
                 padding-bottom: 80px;
             }
 
-            /* the home wave's line sits 35px above the bottom of the home section, so 125 + 35 = the same 160px gap as the other sections */
-            #about { padding-top: 125px; }
 
             #contact + footer {
                 margin-top: 80px;
@@ -1746,7 +1772,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 110px; padding-bottom: 230px; }
+            #home { padding-top: 110px; padding-bottom: 354px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1754,7 +1780,7 @@
             #home {
                 min-height: auto;
                 padding-top: 115px;
-                padding-bottom: 220px;
+                padding-bottom: 374px;
             }
         }
 
@@ -1895,15 +1921,47 @@
         .home-wave {
             position: absolute;
             left: 0;
-            bottom: 0;
+            bottom: 154px;              /* sits above the mission clock: 80px + 56px clock + 18px gap */
             width: 100%;
             height: 70px;
             pointer-events: none;
             z-index: 0;
         }
 
+        .mission-clock {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 80px;
+            height: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .mc-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--ash-brown);
+        }
+
+        .mc-time {
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            line-height: 1.15;
+            color: var(--dark-text);
+        }
+
         @media (max-width: 768px) {
-            .home-wave { height: 120px; }
+            .home-wave { height: 120px; bottom: 124px; }          /* 60px + 48px clock + 16px gap */
+            .mission-clock { bottom: 60px; height: 48px; }
+            .mc-time { font-size: 1.5rem; }
         }
 
         /* CubeSat orbiting the home text */
@@ -2141,6 +2199,10 @@
             <p class="tagline">Someday I will reach the Steins;Gate. El Psy Congroo!!</p>
         </div>
         <canvas class="home-wave" aria-hidden="true"></canvas>
+        <div class="mission-clock" aria-hidden="true">
+            <div class="mc-label">MISSION TIME</div>
+            <div class="mc-time" id="mission-time">T+ 00:00:00</div>
+        </div>
         <div class="orbit" aria-hidden="true">
             <div class="cubesat">
                 <div class="cs-scene">
@@ -2181,7 +2243,7 @@
             </div>
 
             <div class="skills">
-                <h3 class="skills-title">Skills</h3>
+                <h3 class="skills-title">Tech Stack</h3>
                 <div class="skill-group">
                     <div class="skill-group-title">Programming</div>
                     <div class="skill-list">
@@ -2650,7 +2712,7 @@
                 const minY = Math.max(0, (nav ? nav.offsetHeight : 0) - homeTop) + 44;
                 const drop = small ? 28 : 40;                       // the whole orbit sits this much lower (the section has the same extra room)
                 const waveEl = home.querySelector('.home-wave');
-                const maxY = hr.height - 44 - drop - (waveEl ? waveEl.offsetHeight : 0);
+                const maxY = hr.height - 44 - drop - (waveEl ? waveEl.offsetHeight + (parseFloat(getComputedStyle(waveEl).bottom) || 0) : 0);
                 const sinT = Math.abs(Math.sin(theta)), cosT = Math.cos(theta);
                 let ext = Math.hypot(a * sinT, b * cosT);          // half of the orbit's visible height
                 const room = (maxY - minY) / 2;
@@ -2858,6 +2920,59 @@
                 requestAnimationFrame(loop);
             }
             requestAnimationFrame(loop);
+        })();
+
+        // Mission clock: counts up from the moment the website opens (when the loading screen goes away)
+        (function () {
+            const el = document.getElementById('mission-time');
+            if (!el) return;
+            let startAt = null;
+            const pad = n => String(n).padStart(2, '0');
+            function tick() {
+                if (startAt === null) return;
+                const sec = Math.floor((performance.now() - startAt) / 1000);
+                el.textContent = 'T+ ' + pad(Math.floor(sec / 3600)) + ':' + pad(Math.floor(sec / 60) % 60) + ':' + pad(sec % 60);
+            }
+            function begin() { startAt = performance.now(); tick(); setInterval(tick, 250); }
+            const loaderEl = document.getElementById('loader');
+            if (!loaderEl || loaderEl.classList.contains('hide')) begin();
+            else document.addEventListener('loader-hidden', begin, { once: true });
+        })();
+
+        // Tech stack: every row slides in from the right and loops (tiles are repeated to fill the width)
+        (function () {
+            const lists = document.querySelectorAll('#about .skill-list');
+            if (!lists.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const SPEED = 40;                                   // pixels per second
+
+            lists.forEach(list => {
+                const originals = Array.from(list.children);
+                const track = document.createElement('div');
+                track.className = 'skill-track';
+                originals.forEach(n => track.appendChild(n));
+                list.appendChild(track);
+                list.classList.add('is-marquee');
+
+                function layout() {
+                    track.querySelectorAll('[data-clone]').forEach(n => n.remove());
+                    const setW = track.getBoundingClientRect().width;       // one set of tiles, including the gaps
+                    if (!setW) return;
+                    const copies = Math.ceil(list.clientWidth / setW) + 1;
+                    for (let i = 0; i < copies; i++) {
+                        originals.forEach(n => {
+                            const c = n.cloneNode(true);
+                            c.setAttribute('data-clone', '');
+                            c.setAttribute('aria-hidden', 'true');
+                            track.appendChild(c);
+                        });
+                    }
+                    track.style.setProperty('--set-w', setW + 'px');
+                    track.style.setProperty('--dur', (setW / SPEED) + 's');
+                }
+
+                layout();
+                new ResizeObserver(layout).observe(list);
+            });
         })();
 
         // Block right-click / long-press on every image (works for any image added later too)
