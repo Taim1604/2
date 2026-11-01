@@ -633,7 +633,11 @@
 
         .about-text p + p { margin-top: 14px; }
 
-        .skills { margin-top: 60px; }
+        .skills {
+            padding: 28px 0 30px;
+            border-top: 2px solid var(--dark-text);
+            text-align: center;
+        }
 
         .skills-title {
             font-size: 1.7rem;
@@ -641,7 +645,7 @@
             letter-spacing: -0.4px;
         }
 
-        .skill-group { margin-top: 30px; }
+        .skill-group { margin-top: 26px; }
 
         .skill-group-title {
             display: inline-flex;
@@ -739,6 +743,7 @@
 
         @media (max-width: 768px) {
             .about-text { padding: 22px 18px 26px; }
+            .skills { padding: 22px 0 24px; }
             .about-text p { font-size: 1rem; }
             .skill-list { gap: 14px; }
             .skill-track .skill { margin-right: 14px; }
@@ -1772,7 +1777,7 @@
 
         /* Gap between the navbar and the home content */
         @media (max-width: 768px) {
-            #home { padding-top: 110px; padding-bottom: 354px; }
+            #home { padding-top: 110px; padding-bottom: 366px; }
         }
 
         /* Desktop only: bring the home content closer to the navbar (115px gap below the navbar) */
@@ -1780,7 +1785,7 @@
             #home {
                 min-height: auto;
                 padding-top: 115px;
-                padding-bottom: 374px;
+                padding-bottom: 386px;
             }
         }
 
@@ -1921,7 +1926,7 @@
         .home-wave {
             position: absolute;
             left: 0;
-            bottom: 154px;              /* sits above the mission clock: 80px + 56px clock + 18px gap */
+            bottom: 166px;              /* sits above the mission clock: 80px + 56px clock + 30px gap */
             width: 100%;
             height: 70px;
             pointer-events: none;
@@ -1959,7 +1964,7 @@
         }
 
         @media (max-width: 768px) {
-            .home-wave { height: 120px; bottom: 124px; }          /* 60px + 48px clock + 16px gap */
+            .home-wave { height: 120px; bottom: 136px; }          /* 60px + 48px clock + 28px gap */
             .mission-clock { bottom: 60px; height: 48px; }
             .mc-time { font-size: 1.5rem; }
         }
@@ -2240,38 +2245,38 @@
                     <p>Placeholder text for your introduction. Tell visitors who you are, what you study or do, and what drives you. As an Electrical &amp; Electronic Engineer, this is a good place to mention the areas you care about most, like circuits, embedded systems or power.</p>
                     <p>Placeholder text for your second paragraph. Share a little about your background, what you are working on right now, or what you enjoy doing outside of work.</p>
                 </div>
+                <div class="skills">
+                    <h3 class="skills-title">Tech Stack</h3>
+                    <div class="skill-group">
+                        <div class="skill-group-title">Programming</div>
+                        <div class="skill-list">
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Python</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C++</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>JavaScript</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>MATLAB</span></div>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-title">Electronics &amp; Hardware</div>
+                        <div class="skill-list">
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" alt="Arduino" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Arduino</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Raspberry Pi</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Linux</span></div>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <div class="skill-group-title">Tools &amp; Software</div>
+                        <div class="skill-list">
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>VS Code</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Git</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>GitHub</span></div>
+                            <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Figma</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="skills">
-                <h3 class="skills-title">Tech Stack</h3>
-                <div class="skill-group">
-                    <div class="skill-group-title">Programming</div>
-                    <div class="skill-list">
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Python</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>C++</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>JavaScript</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>MATLAB</span></div>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <div class="skill-group-title">Electronics &amp; Hardware</div>
-                    <div class="skill-list">
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" alt="Arduino" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Arduino</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" alt="Raspberry Pi" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Raspberry Pi</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Linux</span></div>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <div class="skill-group-title">Tools &amp; Software</div>
-                    <div class="skill-list">
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>VS Code</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Git</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>GitHub</span></div>
-                        <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;skill-fallback&quot;&gt;'+this.alt.slice(0,2)+'&lt;/span&gt;'"><span>Figma</span></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
